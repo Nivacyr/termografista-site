@@ -1,0 +1,529 @@
+:root {
+    --primary: #3498db;
+    --secondary: #ecf0f1;
+    --accent: #f39c12;
+    --success: #2ecc71;
+    --warning: #f1c40f;
+    --danger: #e74c3c;
+    --light: #121212;
+    --dark: #000000;
+    --white: #ffffff;
+    --bg-dark: #000000;
+    --bg-panel: #0a0a0a;
+    --gray: #bdc3c7;
+    --border: #222222;
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+    --text-main: #ecf0f1;
+    --text-muted: #bdc3c7;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: var(--text-main);
+    background-color: var(--bg-dark);
+    -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: var(--accent);
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+section {
+    padding: 5rem 0;
+}
+
+/* BLOCO 3 — AUTORIDADE DO INSTRUTOR */
+.instructor-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+}
+
+@media (min-width: 768px) {
+    .instructor-profile {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+.instructor-img {
+    width: 300px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.instructor-content h3 {
+    font-size: 1.5rem;
+    color: var(--secondary);
+    margin-bottom: 0.5rem;
+}
+
+.instructor-list {
+    list-style: none;
+}
+
+.instructor-list li {
+    padding: 0.5rem 0;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.instructor-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
+}
+
+/* BLOCO 4 — O QUE VOCÊ VAI APRENDER */
+.checklist {
+    list-style: none;
+    display: grid;
+    gap: 1rem;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--bg-panel);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    transition: transform 0.3s ease;
+}
+
+.checklist-item:hover {
+    transform: translateX(5px);
+    border-color: var(--accent);
+}
+
+.checklist-item svg {
+    color: var(--success);
+    flex-shrink: 0;
+}
+
+/* BLOCO 5 — COMO FUNCIONA */
+.cards-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.card {
+    background: var(--bg-panel);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.9);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-icon svg {
+    width: 60px;
+    height: 60px;
+    color: var(--accent);
+    filter: drop-shadow(0 0 8px rgba(243, 156, 18, 0.4));
+    transition: all 0.3s ease;
+}
+
+.card:hover .card-icon svg {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 15px rgba(243, 156, 18, 0.8));
+    color: #ffcc00;
+}
+
+.card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+}
+
+/* BLOCO 6 — PARA QUEM É */
+.audience-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.audience-item {
+    background: linear-gradient(135deg, #004488 0%, #002244 100%);
+    color: var(--white);
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.audience-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+    border-color: var(--primary);
+    background: linear-gradient(135deg, #0055aa 0%, #003366 100%);
+}
+
+.audience-item svg {
+    color: var(--accent);
+    filter: drop-shadow(0 0 5px rgba(243, 156, 18, 0.5));
+}
+
+/* BLOCO 7 — IMPORTANTE SABER */
+.notice-box {
+    background: #1a1a10;
+    border: 1px solid #332b00;
+    padding: 2.5rem;
+    border-radius: 12px;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.notice-box p {
+    font-weight: 600;
+    margin-bottom: 0;
+    color: #ffcc00;
+}
+
+/* BLOCO 8 — OFERTA */
+.offer-box {
+    background: var(--bg-panel);
+    border: 2px solid var(--accent);
+    border-radius: 20px;
+    padding: 3rem;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.8);
+}
+
+.price {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 2rem 0;
+}
+
+.offer-features {
+    list-style: none;
+    margin-bottom: 2rem;
+    text-align: left;
+    display: inline-block;
+}
+
+.offer-features li {
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* BLOCO 9 — FAQ */
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0;
+}
+
+.faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 1rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--secondary);
+}
+
+.faq-question::after {
+    content: "+";
+    font-size: 1.5rem;
+    color: var(--accent);
+}
+
+.faq-item.active .faq-question::after {
+    content: "-";
+}
+
+.instructor-content h1 {
+    color: var(--accent);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.instructor-list li {
+    padding: 0.5rem 0;
+    position: relative;
+    padding-left: 1.5rem;
+    color: var(--text-main);
+}
+
+.faq-answer {
+    padding: 0 1rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    opacity: 0;
+    color: var(--text-muted);
+}
+
+.faq-item.active .faq-answer {
+    max-height: 200px;
+    padding: 1rem;
+    opacity: 1;
+}
+
+/* BLOCO 10 — RODAPÉ */
+footer {
+    background: var(--dark);
+    color: var(--white);
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: var(--gray);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.footer-links a:hover {
+    color: var(--white);
+}
+
+.footer-disclaimer {
+    font-size: 0.8rem;
+    color: var(--gray);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    border: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: var(--white);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    padding: 1.2rem 2.5rem;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 20%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(30deg);
+    transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.btn-primary:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(230, 126, 34, 0.6);
+    background: linear-gradient(135deg, #ff9f1c 0%, #f39c12 100%);
+}
+
+.btn-primary:hover::after {
+    left: 120%;
+}
+
+.btn-primary:active {
+    transform: translateY(-2px);
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 2.25rem;
+}
+
+.bg-light {
+    background-color: var(--light);
+}
+
+/* Base Responsive Grid */
+.grid {
+    display: grid;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Specific Block Styles */
+
+/* BLOCO 1 — HERO */
+.hero {
+    position: relative;
+    /* Gradiente abstrato estilo termovisão: tons de preto para áreas frias, vermelho e amarelo para áreas quentes */
+    background: radial-gradient(circle at 70% 30%, #ffcc00 0%, transparent 40%),
+        radial-gradient(circle at 30% 70%, #cc0000 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, #990000 0%, transparent 50%),
+        linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+    background-size: cover;
+    color: var(--white);
+    padding: 8rem 0 6rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero h1 {
+    color: var(--white);
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: -1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.hero .subtitle {
+    font-size: 1.25rem;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    opacity: 0.9;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.hero-features {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+}
+
+.hero-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.hero-feature-item svg {
+    color: var(--accent);
+}
+
+/* BLOCO 2 — IDENTIFICAÇÃO DO PROBLEMA */
+.problem-list {
+    list-style: none;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.problem-list li {
+    padding: 1.25rem;
+    background: var(--bg-panel);
+    border-left: 4px solid var(--danger);
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 600;
+    border-radius: 0 8px 8px 0;
+    transition: transform 0.3s ease;
+}
+
+.problem-list li:hover {
+    transform: translateX(10px);
+}
+
+.problem-list li::before {
+    content: "✔";
+    color: var(--success);
+    font-weight: bold;
+}
