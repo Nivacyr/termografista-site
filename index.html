@@ -118,31 +118,8 @@
                 </div>
             </div>
             <div class="hero-3d" id="hero3d">
-                <canvas id="canvas3d"></canvas>
-                <script type="module">
-                    import { Application } from 'https://unpkg.com/@splinetool/runtime@1.12.68/build/runtime.js';
-                    const canvas = document.getElementById('canvas3d');
-                    const app = new Application(canvas);
-                    app.load('https://prod.spline.design/vCwD3PhWh9YH4MO4KWsToCx8/scene.splinecode')
-                        .then(() => {
-                            // Remove Spline watermark
-                            const watermarks = document.querySelectorAll('.spline-watermark, a[href*="spline.design"]');
-                            watermarks.forEach(el => el.remove());
-                            console.log('[Termografista] Spline watermark removed');
-                        })
-                        .catch(err => {
-                            console.warn('[Termografista] Spline load error, trying embed fallback...', err);
-                            // Fallback to iframe embed
-                            const container = document.getElementById('hero3d');
-                            canvas.style.display = 'none';
-                            const iframe = document.createElement('iframe');
-                            iframe.src = 'https://my.spline.design/thermocube-vCwD3PhWh9YH4MO4KWsToCx8/';
-                            iframe.style.cssText = 'width:100%;height:100%;border:none;';
-                            iframe.loading = 'lazy';
-                            iframe.title = 'Cena 3D interativa - Termografia';
-                            container.appendChild(iframe);
-                        });
-                </script>
+                <spline-viewer url="https://prod.spline.design/vCwD3PhWh9YH4MO4KWsToCx8/scene.splinecode" style="width:100%;height:100%;display:block;"></spline-viewer>
+                <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
             </div>
         </div>
         <div class="hero-scroll-indicator">
