@@ -74,16 +74,21 @@ body {
 /* ============ BACKGROUND VIDEO ============ */
 .background-video {
     position: fixed;
-    right: 0;
-    bottom: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.7); /* Retornado para 70% conforme solicitado */
     min-width: 100%;
     min-height: 100%;
     width: auto;
     height: auto;
-    z-index: -1;
-    object-fit: cover;
-    opacity: 0.4; /* Ajuste opacidade para legibilidade */
+    z-index: -10;
+    object-fit: contain;
+    opacity: 0.25; /* Mais sutil para disfarçar imperfeições */
+    filter: blur(1.25px) brightness(0.8); /* Desfoque suave (reduzido em 75% do original) */
+    pointer-events: none;
 }
+
+
 
 
 a {
@@ -349,11 +354,12 @@ img {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(240, 165, 0, 0.1) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 50% at 50% 100%, rgba(10, 10, 15, 0.8) 0%, transparent 50%);
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(240, 165, 0, 0.05) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 50% 100%, rgba(10, 10, 15, 0.5) 0%, transparent 50%);
     pointer-events: none;
     z-index: 1;
 }
+
 
 
 .hero-container {
@@ -546,17 +552,18 @@ spline-viewer::part(logo) {
     line-height: 1.7;
 }
 
-/* Alternating backgrounds */
-.section-duvidas { background: var(--bg-secondary); }
-.section-pilares { background: var(--bg-primary); }
-.section-ferramentas { background: var(--bg-secondary); }
-.section-casos { background: var(--bg-primary); }
-.section-conhecimento { background: var(--bg-secondary); }
-.section-comece { background: var(--bg-primary); }
-.section-noticias { background: var(--bg-secondary); }
-.section-treinamento { background: var(--bg-primary); }
-.section-apps { background: var(--bg-secondary); }
-.section-comunidade { background: var(--bg-primary); }
+/* Alternating backgrounds - Tornados transparentes para ver o vídeo */
+.section-duvidas { background: transparent; }
+.section-pilares { background: transparent; }
+.section-ferramentas { background: transparent; }
+.section-casos { background: transparent; }
+.section-conhecimento { background: transparent; }
+.section-comece { background: transparent; }
+.section-noticias { background: transparent; }
+.section-treinamento { background: transparent; }
+.section-apps { background: transparent; }
+.section-comunidade { background: transparent; }
+
 
 /* ============ DÚVIDAS REAIS GRID ============ */
 .duvidas-grid {
