@@ -18,7 +18,7 @@ import { useEffect, useRef } from 'react';
 const SPLINE_VIEWER_SCRIPT = 'https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js';
 
 export default function SplineViewer({
-  url = 'https://prod.spline.design/vCwD3PhWh9YH4MO4KWsToCx8/scene.splinecode',
+  url = 'https://prod.spline.design/qlqmPKe8eBPztVbH/scene.splinecode',
   style = {},
   className = '',
 }) {
