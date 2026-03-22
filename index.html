@@ -51,7 +51,7 @@
 <body>
     <!-- ============ BACKGROUND VIDEO ============ -->
     <video autoplay muted loop playsinline class="background-video">
-        <source src="explosaotermografica.mp4" type="video/mp4">
+        <source src="video.mp4" type="video/mp4">
     </video>
 
     <!-- ============ NAVBAR ============ -->
@@ -88,10 +88,10 @@
         <div class="hero-bg-gradient"></div>
         <div class="hero-container">
             <div class="hero-content">
-                <div class="hero-badge">Portal Técnico de Termografia</div>
+                <div class="hero-badge">PORTAL TÉCNICO DO TERMOGRAFISTA</div>
                 <h1 class="hero-title">
                     O portal técnico para quem trabalha com
-                    <span class="hero-highlight">termografia no campo</span>
+                    <span class="hero-highlight">termografia na prática</span>
                 </h1>
                 <p class="hero-subtitle">
                     Conhecimento técnico, ferramentas práticas, casos reais e conteúdos para melhorar inspeções
@@ -140,103 +140,159 @@
                 <p class="section-desc">Encontre respostas técnicas diretas para as principais dúvidas de campo</p>
             </div>
             <div class="duvidas-grid">
-                <a href="#" class="duvida-card" id="duvida-emissividade">
-                    <div class="duvida-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M12 16v-4M12 8h.01" />
-                        </svg>
+                <div class="duvida-card" id="duvida-emissividade">
+                    <div class="duvida-card-inner">
+                        <div class="duvida-card-front">
+                            <div class="duvida-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 16v-4M12 8h.01" />
+                                </svg>
+                            </div>
+                            <h3>Erro de emissividade</h3>
+                            <p>Entenda por que o valor de emissividade errado compromete toda a sua medição de temperatura.</p>
+                            <span class="duvida-link btn-flip">Ver explicação →</span>
+                        </div>
+                        <div class="duvida-card-back">
+                            <p>Valor incorreto de emissividade gera leituras erradas de temperatura, podendo mascarar ou exagerar falhas térmicas.</p>
+                            <span class="duvida-link btn-flip">← Voltar</span>
+                        </div>
                     </div>
-                    <h3>Erro de emissividade</h3>
-                    <p>Entenda por que o valor de emissividade errado compromete toda a sua medição de temperatura.</p>
-                    <span class="duvida-link">Ver explicação →</span>
-                </a>
-                <a href="#" class="duvida-card" id="duvida-reflexo">
-                    <div class="duvida-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                        </svg>
+                </div>
+                <div class="duvida-card" id="duvida-reflexo">
+                    <div class="duvida-card-inner">
+                        <div class="duvida-card-front">
+                            <div class="duvida-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                                </svg>
+                            </div>
+                            <h3>Reflexo térmico ou aquecimento real?</h3>
+                            <p>Como diferenciar uma fonte de calor refletida de um ponto quente verdadeiro na imagem.</p>
+                            <span class="duvida-link btn-flip">Ver explicação →</span>
+                        </div>
+                        <div class="duvida-card-back">
+                            <p>Se a temperatura muda com o ângulo ou posição, é reflexo. Se permanece fixa no ponto, é aquecimento real.</p>
+                            <span class="duvida-link btn-flip">← Voltar</span>
+                        </div>
                     </div>
-                    <h3>Reflexo térmico ou aquecimento real?</h3>
-                    <p>Como diferenciar uma fonte de calor refletida de um ponto quente verdadeiro na imagem.</p>
-                    <span class="duvida-link">Ver explicação →</span>
-                </a>
-                <a href="#" class="duvida-card" id="duvida-ifov">
-                    <div class="duvida-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <circle cx="12" cy="12" r="6" />
-                            <circle cx="12" cy="12" r="2" />
-                        </svg>
+                </div>
+                <div class="duvida-card" id="duvida-ifov">
+                    <div class="duvida-card-inner">
+                        <div class="duvida-card-front">
+                            <div class="duvida-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <circle cx="12" cy="12" r="6" />
+                                    <circle cx="12" cy="12" r="2" />
+                                </svg>
+                            </div>
+                            <h3>Distância de medição e IFOV</h3>
+                            <p>Saiba como a distância e a resolução óptica afetam diretamente a precisão da leitura.</p>
+                            <span class="duvida-link btn-flip">Ver explicação →</span>
+                        </div>
+                        <div class="duvida-card-back">
+                            <p>Se o alvo for menor que o IFOV, a leitura mistura fundo e perde precisão. O alvo deve ocupar vários pixels.</p>
+                            <span class="duvida-link btn-flip">← Voltar</span>
+                        </div>
                     </div>
-                    <h3>Distância de medição e IFOV</h3>
-                    <p>Saiba como a distância e a resolução óptica afetam diretamente a precisão da leitura.</p>
-                    <span class="duvida-link">Ver explicação →</span>
-                </a>
-                <a href="#" class="duvida-card" id="duvida-gradiente">
-                    <div class="duvida-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
-                            <path d="M12 12v9M8 17l4 4 4-4" />
-                        </svg>
+                </div>
+                <div class="duvida-card" id="duvida-gradiente">
+                    <div class="duvida-card-inner">
+                        <div class="duvida-card-front">
+                            <div class="duvida-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
+                                    <path d="M12 12v9M8 17l4 4 4-4" />
+                                </svg>
+                            </div>
+                            <h3>Como interpretar gradiente térmico</h3>
+                            <p>Interprete corretamente as variações de temperatura em diferentes pontos do componente.</p>
+                            <span class="duvida-link btn-flip">Ver explicação →</span>
+                        </div>
+                        <div class="duvida-card-back">
+                            <p>Diferença de temperatura (ΔT) indica anomalias. Comparar sempre fases e pontos equivalentes.</p>
+                            <span class="duvida-link btn-flip">← Voltar</span>
+                        </div>
                     </div>
-                    <h3>Como interpretar gradiente térmico</h3>
-                    <p>Interprete corretamente as variações de temperatura em diferentes pontos do componente.</p>
-                    <span class="duvida-link">Ver explicação →</span>
-                </a>
-                <a href="#" class="duvida-card" id="duvida-relatorio">
-                    <div class="duvida-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                            <polyline points="14 2 14 8 20 8" />
-                            <line x1="16" y1="13" x2="8" y2="13" />
-                            <line x1="16" y1="17" x2="8" y2="17" />
-                        </svg>
+                </div>
+                <div class="duvida-card" id="duvida-relatorio">
+                    <div class="duvida-card-inner">
+                        <div class="duvida-card-front">
+                            <div class="duvida-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                    <line x1="16" y1="13" x2="8" y2="13" />
+                                    <line x1="16" y1="17" x2="8" y2="17" />
+                                </svg>
+                            </div>
+                            <h3>Como descrever o achado no relatório</h3>
+                            <p>Técnicas para registrar anomalias térmicas com clareza, objetividade e critério técnico.</p>
+                            <span class="duvida-link btn-flip">Ver explicação →</span>
+                        </div>
+                        <div class="duvida-card-back">
+                            <p>Registrar local, carga, temperaturas, ΔT, possível causa e recomendação, de forma objetiva e quantificada.</p>
+                            <span class="duvida-link btn-flip">← Voltar</span>
+                        </div>
                     </div>
-                    <h3>Como descrever o achado no relatório</h3>
-                    <p>Técnicas para registrar anomalias térmicas com clareza, objetividade e critério técnico.</p>
-                    <span class="duvida-link">Ver explicação →</span>
-                </a>
-                <a href="#" class="duvida-card" id="duvida-metalicas">
-                    <div class="duvida-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                            <path d="M3 9h18M9 21V9" />
-                        </svg>
+                </div>
+                <div class="duvida-card" id="duvida-metalicas">
+                    <div class="duvida-card-inner">
+                        <div class="duvida-card-front">
+                            <div class="duvida-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                    <path d="M3 9h18M9 21V9" />
+                                </svg>
+                            </div>
+                            <h3>Superfícies metálicas brilhantes</h3>
+                            <p>Por que metais polidos e brilhantes são os alvos mais difíceis e como lidar com isso.</p>
+                            <span class="duvida-link btn-flip">Ver explicação →</span>
+                        </div>
+                        <div class="duvida-card-back">
+                            <p>Baixa emissividade e alta reflexão geram leituras falsas. Use fita ou ajuste emissividade.</p>
+                            <span class="duvida-link btn-flip">← Voltar</span>
+                        </div>
                     </div>
-                    <h3>Superfícies metálicas brilhantes</h3>
-                    <p>Por que metais polidos e brilhantes são os alvos mais difíceis e como lidar com isso.</p>
-                    <span class="duvida-link">Ver explicação →</span>
-                </a>
-                <a href="#" class="duvida-card" id="duvida-radiometrica">
-                    <div class="duvida-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="2" width="20" height="20" rx="2" />
-                            <path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 7h5M17 17h5" />
-                        </svg>
+                </div>
+                <div class="duvida-card" id="duvida-radiometrica">
+                    <div class="duvida-card-inner">
+                        <div class="duvida-card-front">
+                            <div class="duvida-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="2" width="20" height="20" rx="2" />
+                                    <path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 7h5M17 17h5" />
+                                </svg>
+                            </div>
+                            <h3>Imagem térmica vs. radiométrica</h3>
+                            <p>Entenda a diferença entre uma foto térmica simples e um termograma com dados reais de temperatura.</p>
+                            <span class="duvida-link btn-flip">Ver explicação →</span>
+                        </div>
+                        <div class="duvida-card-back">
+                            <p>Imagem simples é visual. Radiométrica permite medir temperatura em cada pixel e analisar corretamente.</p>
+                            <span class="duvida-link btn-flip">← Voltar</span>
+                        </div>
                     </div>
-                    <h3>Imagem térmica vs. radiométrica</h3>
-                    <p>Entenda a diferença entre uma foto térmica simples e um termograma com dados reais de temperatura.</p>
-                    <span class="duvida-link">Ver explicação →</span>
-                </a>
-                <a href="#" class="duvida-card" id="duvida-eletrica">
-                    <div class="duvida-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
-                        </svg>
+                </div>
+                <div class="duvida-card" id="duvida-eletrica">
+                    <div class="duvida-card-inner">
+                        <div class="duvida-card-front">
+                            <div class="duvida-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+                                </svg>
+                            </div>
+                            <h3>Erros de leitura em inspeção elétrica</h3>
+                            <p>Os erros mais comuns ao inspecionar painéis, barramentos e conexões elétricas com termovisor.</p>
+                            <span class="duvida-link btn-flip">Ver explicação →</span>
+                        </div>
+                        <div class="duvida-card-back">
+                            <p>Principais: emissividade errada, reflexo, distância inadequada, baixa carga e falta de comparação entre fases.</p>
+                            <span class="duvida-link btn-flip">← Voltar</span>
+                        </div>
                     </div>
-                    <h3>Erros de leitura em inspeção elétrica</h3>
-                    <p>Os erros mais comuns ao inspecionar painéis, barramentos e conexões elétricas com termovisor.</p>
-                    <span class="duvida-link">Ver explicação →</span>
-                </a>
+                </div>
             </div>
         </div>
     </section>

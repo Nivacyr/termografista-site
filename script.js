@@ -249,6 +249,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ============ FLIP CARDS ANIMATION ============
+    document.querySelectorAll('.btn-flip').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const card = e.target.closest('.duvida-card');
+            if (card) {
+                card.classList.toggle('is-flipped');
+            }
+        });
+    });
+
     // ============ PERFORMANCE: Throttle scroll events ============
     let scrollTicking = false;
 

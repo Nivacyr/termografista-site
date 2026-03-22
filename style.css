@@ -83,8 +83,8 @@ body {
     height: auto;
     z-index: -10;
     object-fit: contain;
-    opacity: 0.25; /* Mais sutil para disfarçar imperfeições */
-    filter: blur(1.25px) brightness(0.8); /* Desfoque suave (reduzido em 75% do original) */
+    opacity: 0.16; /* Opacidade ajustada para brilho intermediário */
+    filter: blur(1.25px) brightness(0.38); /* Brilho reposicionado na metade */
     pointer-events: none;
 }
 
@@ -573,21 +573,65 @@ spline-viewer::part(logo) {
 }
 
 .duvida-card {
-    display: flex;
-    flex-direction: column;
-    padding: 28px 24px;
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--border-radius);
-    transition: all var(--transition-medium);
+    perspective: 1000px;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
     cursor: pointer;
 }
 
-.duvida-card:hover {
+.duvida-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+}
+
+.duvida-card.is-flipped .duvida-card-inner {
+    transform: rotateY(180deg);
+}
+
+.duvida-card:hover .duvida-card-inner {
+    transform: translateY(-4px);
+}
+
+.duvida-card.is-flipped:hover .duvida-card-inner {
+    transform: rotateY(180deg) translateY(-4px);
+}
+
+.duvida-card-front, .duvida-card-back {
+    grid-area: 1 / 1;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--border-radius);
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    transition: all var(--transition-medium);
+}
+
+.duvida-card:hover .duvida-card-front, .duvida-card:hover .duvida-card-back {
     background: var(--bg-card-hover);
     border-color: rgba(240, 165, 0, 0.15);
-    transform: translateY(-4px);
     box-shadow: var(--shadow-glow);
+}
+
+.duvida-card-back {
+    transform: rotateY(180deg);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.duvida-card-back p {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin-bottom: 20px;
 }
 
 .duvida-icon {
