@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados da Pesquisa | Termografista.com.br</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .search-page {
+            max-width: 800px;
+            margin: 140px auto 80px;
+            padding: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            min-height: 50vh;
+        }
+
+        .search-term-display {
+            color: var(--accent-yellow);
+        }
+
+        .results-count {
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            font-size: 0.95rem;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 16px;
+        }
+
+        .result-item {
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border-light);
+            transition: transform 0.2s ease;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-item:hover {
+            transform: translateX(5px);
+        }
+
+        .result-item-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 8px;
+            transition: color 0.2s;
+        }
+
+        .result-item-title:hover {
+            color: var(--accent-yellow);
+        }
+
+        .result-item-url {
+            font-size: 0.8rem;
+            color: #4ade80;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .result-item-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============ NAVBAR ============ -->
+    <nav class="navbar scrolled" id="navbar" style="background: rgba(10, 10, 15, 0.95); padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3" />
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
+                </span>
+                <span class="logo-text">termografista<span class="logo-dot">.com.br</span></span>
+            </a>
+            <div class="nav-links" id="navLinks" style="display: flex; align-items: center;">
+                <a href="index.html#conhecimento" class="nav-link">Conhecimento</a>
+                <a href="index.html#ferramentas" class="nav-link">Ferramentas</a>
+                <a href="index.html#noticias" class="nav-link">Notícias</a>
+                <a href="index.html#comunidade" class="nav-link nav-link-cta">Participar</a>
+
+                <!-- Barra de Pesquisa Expansível -->
+                <div class="search-container">
+                    <form action="pesquisa.html" method="GET" target="_self" class="search-form">
+                        <input type="text" name="q" class="search-input" placeholder="Pesquisar..." required>
+                        <button type="submit" class="search-btn" aria-label="Pesquisar">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============ SEARCH RESULTS SECTION ============ -->
+    <div class="container">
+        <div class="search-page">
+            <h1 class="section-title">Resultados para "<span class="search-term-display" id="searchTermDisplay"></span>"</h1>
+            <div class="results-count" id="resultsCount">Pesquisando em toda a base de conhecimento...</div>
+            
+            <div id="resultsContainer">
+                <!-- Os resultados renderizarão dinamicamente aqui via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ JS INTERNO DE BUSCA ============ -->
+    <script>
+        // "Banco de dados" estático do site para buscas rápidas
+        const siteIndex = [
+            {
+                title: "Calculadora de MFOV no Campo",
+                url: "calculadora-ifov.html",
+                keywords: "ferramenta técnica calculo tamanho ponto medição spot size ifov mfov x3 x9 calculadoras simulador acurácia",
+                desc: "Calcule instantaneamente o tamanho real do seu ponto de medição (Spot Size) e garanta que o alvo seja grande o suficiente, visualmente comparando com limitadores."
+            },
+            {
+                title: "O Refúgio do Termografista (Portal Principal)",
+                url: "index.html",
+                keywords: "home início portal técnico termografia prática emissividade reflexão térmica imagens relatórios painel",
+                desc: "Conhecimento técnico de campo, ferramentas práticas, análises de casos reais e conteúdos para as inspeções termográficas no Brasil."
+            },
+            {
+                title: "Assistente de Emissividade",
+                url: "index.html#ferramentas",
+                keywords: "ferramenta calculadora emissividade materiais erro encontrar refletida assistente",
+                desc: "Encontre o valor de emissividade correto para diferentes materiais e superfícies na prática."
+            },
+            {
+                title: "Cálculo de Temperatura Refletida",
+                url: "index.html#ferramentas",
+                keywords: "ferramenta calculadora ambiente fundo refletiva configuracoes termovisor aparente",
+                desc: "Determine matematicamente a temperatura refletida aparente para configurar de modo adequado os parâmetros do seu equipamento térmico."
+            },
+            {
+                title: "Casos Reais de Campo",
+                url: "index.html#casos",
+                keywords: "biblioteca técnica exemplos análises diagnostico laudo estudo conexão elétrica defeito reflexo quente frio painel baixa tensão baterias",
+                desc: "Análises documentadas com termogramas reais. Aprenda diagnosticando problemas em disjuntores, painéis de CCM e falsos defeitos causados por reflexo térmico."
+            },
+            {
+                title: "Base de Conhecimento Técnico",
+                url: "index.html#conhecimento",
+                keywords: "estudo aprender fundamentos normas radiação nbr iso transferencia calor industria elétrica interpretação paletas cores emissividade relatorios erros comuns",
+                desc: "Acesse todo o nosso material de estudo estruturado detalhadamente sobre fundação termógrafa, elétrica e normas mundiais operacionais aplicadas."
+            }
+        ];
+
+        // 1. Pegar o Query Parameter de ?q=... da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        let query = urlParams.get('q');
+        
+        const displaySpan = document.getElementById('searchTermDisplay');
+        const countDiv = document.getElementById('resultsCount');
+        const resultsContainer = document.getElementById('resultsContainer');
+
+        if (query) {
+            query = query.trim().toLowerCase();
+            displaySpan.textContent = query;
+
+            // 2. Filtrar dados do array
+            const resultados = siteIndex.filter(item => {
+                const termInTitle = item.title.toLowerCase().includes(query);
+                const termInDesc = item.desc.toLowerCase().includes(query);
+                const termInKeywords = item.keywords.toLowerCase().includes(query);
+                
+                return termInTitle || termInDesc || termInKeywords;
+            });
+
+            // 3. Exibir os achados na tela
+            countDiv.textContent = `Encontrado(s) ${resultados.length} resultado(s) relevante(s).`;
+
+            if (resultados.length > 0) {
+                let html = '';
+                resultados.forEach(res => {
+                    html += `
+                        <div class="result-item">
+                            <a href="${res.url}" class="result-item-title">${res.title}</a>
+                            <a href="${res.url}" class="result-item-url">termografista.com.br / ${res.url}</a>
+                            <p class="result-item-desc">${res.desc}</p>
+                        </div>
+                    `;
+                });
+                resultsContainer.innerHTML = html;
+            } else {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <h3>Nenhum resultado encontrado.</h3>
+                        <p style="margin-top:10px;">Não encontramos nenhum artigo ou ferramenta para <strong>"${query}"</strong>.</p>
+                        <p>Tente utilizar termos mais genéricos, como <em>"calculadora"</em>, <em>"defeito"</em> ou <em>"emissividade"</em>.</p>
+                    </div>
+                `;
+            }
+
+        } else {
+            // Caso acessem a página sem parâmetro ?q=
+            displaySpan.textContent = "...";
+            countDiv.textContent = "Digite um termo na caixa de pesquisa acima.";
+        }
+
+    </script>
+</body>
+</html>

@@ -67,14 +67,24 @@
                 </span>
                 <span class="logo-text">termografista<span class="logo-dot">.com.br</span></span>
             </a>
-            <div class="nav-links" id="navLinks">
+            <div class="nav-links" id="navLinks" style="display: flex; align-items: center;">
                 <a href="#conhecimento" class="nav-link">Conhecimento</a>
                 <a href="#ferramentas" class="nav-link">Ferramentas</a>
-                <a href="calculadora-ifov.html" class="nav-link">Calculadora de MFOV</a>
-                <a href="#casos" class="nav-link">Casos Reais</a>
                 <a href="#noticias" class="nav-link">Notícias</a>
-                <a href="#comece" class="nav-link">Comece Aqui</a>
                 <a href="#comunidade" class="nav-link nav-link-cta">Participar</a>
+                
+                <!-- Barra de Pesquisa Expansível -->
+                <div class="search-container">
+                    <form action="pesquisa.html" method="GET" target="_blank" class="search-form">
+                        <input type="text" name="q" class="search-input" placeholder="Pesquisar..." required>
+                        <button type="submit" class="search-btn" aria-label="Pesquisar">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
             </div>
             <button class="nav-toggle" id="navToggle" aria-label="Menu">
                 <span></span>
@@ -711,7 +721,7 @@
                     <h2 class="section-title-sm">Quer organizar seu aprendizado de forma rápida?</h2>
                     <p>O Treinamento Intensivo de Termografia foi criado para eletricistas, técnicos e profissionais de
                         manutenção que querem compreender os principais fundamentos e reduzir erros comuns de campo.</p>
-                    <a href="#" class="btn btn-secondary" id="btn-treinamento">Conhecer treinamento →</a>
+                    <a href="cursorapido/index.html" class="btn btn-secondary" id="btn-treinamento">Conhecer treinamento →</a>
                 </div>
                 <div class="treinamento-features">
                     <div class="treinamento-feature">

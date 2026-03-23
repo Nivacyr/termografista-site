@@ -117,11 +117,24 @@
                 </span>
                 <span class="logo-text">termografista<span class="logo-dot">.com.br</span></span>
             </a>
-            <div class="nav-links" id="navLinks">
+            <div class="nav-links" id="navLinks" style="display: flex; align-items: center;">
                 <a href="index.html#conhecimento" class="nav-link">Conhecimento</a>
                 <a href="index.html#ferramentas" class="nav-link">Ferramentas</a>
-                <a href="calculadora-ifov.html" class="nav-link active" style="color: var(--text-primary);">Calculadora MFOV</a>
-                <a href="index.html#casos" class="nav-link">Casos Reais</a>
+                <a href="index.html#noticias" class="nav-link">Notícias</a>
+                <a href="index.html#comunidade" class="nav-link nav-link-cta">Participar</a>
+
+                <!-- Barra de Pesquisa Expansível -->
+                <div class="search-container">
+                    <form action="pesquisa.html" method="GET" target="_blank" class="search-form">
+                        <input type="text" name="q" class="search-input" placeholder="Pesquisar..." required>
+                        <button type="submit" class="search-btn" aria-label="Pesquisar">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                     </form>
+                </div>
             </div>
         </div>
     </nav>

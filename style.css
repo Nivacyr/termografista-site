@@ -1624,3 +1624,62 @@ spline-viewer::part(logo) {
         font-size: 1.4rem;
     }
 }
+
+/* ============ SEARCH NAV ============ */
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+.search-form {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+.search-input {
+    width: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    outline: none;
+    transition: opacity 0.2s ease, width 0.3s ease, padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.9rem;
+    opacity: 0;
+}
+.search-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+}
+.search-form:hover,
+.search-form:focus-within {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--border-light);
+}
+.search-form:hover .search-input,
+.search-form:focus-within .search-input {
+    width: 180px;
+    padding: 8px 12px;
+    opacity: 1;
+}
+.search-form:hover .search-btn,
+.search-form:focus-within .search-btn {
+    color: var(--accent-yellow);
+}
+@media (max-width: 768px) {
+    .search-form:hover .search-input,
+    .search-form:focus-within .search-input {
+        width: 120px;
+    }
+}
