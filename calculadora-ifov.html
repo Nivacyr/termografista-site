@@ -95,6 +95,56 @@
             color: var(--text-muted);
             margin-top: -5px;
         }
+        .vis-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+            overflow-x: auto;
+            min-width: 100%;
+        }
+        .vis-camera {
+            z-index: 2;
+            margin-right: -20px;
+            background: var(--bg-card);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .vis-camera svg {
+            width: 60px;
+            height: 60px;
+        }
+        #vis-cone {
+            height: 140px;
+            width: 320px;
+            background: linear-gradient(90deg, rgba(240,165,0,0.8) 0%, rgba(240,165,0,0.3) 100%);
+            clip-path: polygon(0 42%, 100% 0, 100% 100%, 0 58%);
+            z-index: 1;
+            transition: all 0.5s;
+        }
+        .vis-target-wrapper {
+            width: 140px;
+            height: 140px;
+            border: 4px solid rgba(255,255,255,0.4);
+            background: linear-gradient(135deg, rgba(240,165,0,0.2), rgba(240,165,0,0.05));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            margin-left: -5px;
+        }
+        #vis-icon {
+            margin-left: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #vis-icon svg {
+            width: 56px !important;
+            height: 56px !important;
+        }
+
         @media (max-width: 768px) {
             .calc-container {
                 margin: 100px 16px 40px;
@@ -116,6 +166,34 @@
             #vis-card {
                 padding: 16px 12px !important;
             }
+            .vis-row {
+                justify-content: flex-start;
+                padding: 10px 0;
+            }
+            .vis-camera {
+                margin-right: -10px;
+                padding: 6px;
+            }
+            .vis-camera svg {
+                width: 40px !important;
+                height: 40px !important;
+            }
+            #vis-cone {
+                width: 160px;
+                height: 80px;
+            }
+            .vis-target-wrapper {
+                width: 80px;
+                height: 80px;
+                border-width: 2px;
+            }
+            #vis-icon {
+                margin-left: 15px;
+            }
+            #vis-icon svg {
+                width: 40px !important;
+                height: 40px !important;
+            }
         }
     </style>
 </head>
@@ -134,7 +212,7 @@
                 </span>
                 <span class="logo-text">termografista<span class="logo-dot">.com.br</span></span>
             </a>
-            <div class="nav-links" id="navLinks" style="display: flex; align-items: center;">
+            <div class="nav-links" id="navLinks">
                 <a href="index.html#conhecimento" class="nav-link">Conhecimento</a>
                 <a href="index.html#ferramentas" class="nav-link">Ferramentas</a>
                 <a href="index.html#noticias" class="nav-link">Notícias</a>
@@ -153,6 +231,9 @@
                      </form>
                 </div>
             </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
         </div>
     </nav>
 
@@ -226,21 +307,21 @@
                             <span id="vis-subtitle" style="font-size: 0.95rem; font-weight: 400; color: #fff; margin-top: 4px;">Medição plenamente confiável.</span>
                         </div>
 
-                        <div style="display: flex; align-items: center; justify-content: center; padding: 20px 0; overflow-x: auto; min-width: 100%;">
+                        <div class="vis-row">
                             
                             <!-- Camera Icon -->
-                            <div style="z-index: 2; margin-right: -20px; background: var(--bg-card); padding: 10px; border-radius: 8px;">
-                                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <div class="vis-camera">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
                                     <circle cx="12" cy="13" r="4"></circle>
                                 </svg>
                             </div>
 
                             <!-- Light Cone -->
-                            <div id="vis-cone" style="height: 140px; width: 320px; background: linear-gradient(90deg, rgba(240,165,0,0.8) 0%, rgba(240,165,0,0.3) 100%); clip-path: polygon(0 42%, 100% 0, 100% 100%, 0 58%); z-index: 1; transition: all 0.5s;"></div>
+                            <div id="vis-cone"></div>
 
                             <!-- Target Area (MFOV bounds) -->
-                            <div style="width: 140px; height: 140px; border: 4px solid rgba(255,255,255,0.4); background: linear-gradient(135deg, rgba(240,165,0,0.2), rgba(240,165,0,0.05)); display: flex; align-items: center; justify-content: center; position: relative; z-index: 2; margin-left: -5px;">
+                            <div class="vis-target-wrapper">
                                 <!-- User Target Size -->
                                 <div id="vis-alvo" style="background: var(--bg-card); border: 2px dashed var(--text-secondary); display: flex; align-items: center; justify-content: center; color: var(--text-primary); font-weight: 800; transition: all 0.5s; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
                                     ALVO
@@ -248,7 +329,7 @@
                             </div>
                             
                             <!-- Status Icon -->
-                            <div id="vis-icon" style="margin-left: 40px; display: flex; align-items: center; justify-content: center;"></div>
+                            <div id="vis-icon"></div>
                         </div>
                     </div>
                 </div>
@@ -365,5 +446,6 @@
         // Inicializar com o cálculo padrão da primeira renderização
         calcular();
     </script>
+    <script src="script.js"></script>
 </body>
 </html>
