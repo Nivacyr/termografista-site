@@ -96,8 +96,25 @@
             margin-top: -5px;
         }
         @media (max-width: 768px) {
+            .calc-container {
+                margin: 100px 16px 40px;
+                padding: 24px 16px;
+                width: auto;
+            }
             .calc-grid, .result-cards {
                 grid-template-columns: 1fr;
+            }
+            .result-value {
+                font-size: 2.2rem !important;
+            }
+            .ifov-top-bar {
+                flex-direction: column !important;
+                gap: 12px !important;
+                padding: 16px !important;
+                text-align: center;
+            }
+            #vis-card {
+                padding: 16px 12px !important;
             }
         }
     </style>
