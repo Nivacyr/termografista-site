@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de FCC - Fator de Correção de Carga | Termografista.com.br</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .calc-container {
+            max-width: 900px;
+            margin: 140px auto 80px;
+            padding: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+        }
+        .calc-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .input-group label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        .input-group input {
+            padding: 14px 16px;
+            border-radius: 8px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
+            font-size: 1.05rem;
+            transition: all var(--transition-fast);
+            font-family: inherit;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--accent-yellow);
+            box-shadow: 0 0 0 2px rgba(240, 165, 0, 0.2);
+        }
+        
+        .results-section {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-light);
+        }
+        
+        .result-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 20px;
+            margin-bottom: 32px;
+        }
+        .result-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all var(--transition-fast);
+        }
+        .result-card h4 {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+        .result-unit {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-top: -2px;
+        }
+        
+        /* Severidade Comparativa */
+        .severity-comparison-box {
+            background: rgba(10, 10, 15, 0.4);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        .severity-header {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .severity-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .severity-col {
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: all var(--transition-fast);
+        }
+        .severity-col-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+        }
+        .severity-badge {
+            display: inline-block;
+            margin: 6px auto;
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .severity-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Cores de Severidade */
+        .status-normal {
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+        }
+        .status-alert {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+        .status-critical {
+            background: rgba(248, 113, 113, 0.1);
+            border: 1px solid rgba(248, 113, 113, 0.2);
+            color: #f87171;
+            animation: pulse-border 2s infinite ease-in-out;
+        }
+        
+        .badge-normal { background: #166534; color: #4ade80; }
+        .badge-alert { background: #78350f; color: #fbbf24; }
+        .badge-critical { background: #7f1d1d; color: #f87171; }
+        
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(248, 113, 113, 0.2); }
+            50% { border-color: rgba(248, 113, 113, 0.5); }
+        }
+
+        /* Simulador Térmico SVG */
+        .sim-container {
+            margin-top: 40px;
+            border-top: 1px solid var(--border-light);
+            padding-top: 40px;
+        }
+        .sim-title {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+        }
+        .sim-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .sim-card {
+            background: rgba(10, 10, 15, 0.6);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+        }
+        .sim-card-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--text-primary);
+        }
+        .sim-svg-wrapper {
+            width: 100%;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #040406;
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            overflow: hidden;
+        }
+        .sim-svg-wrapper svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Elementos SVG Animados */
+        .glow-filter {
+            filter: drop-shadow(0 0 8px var(--glow-color, rgba(255, 255, 255, 0.2)));
+            transition: filter 0.5s ease;
+        }
+        .cable-flow {
+            stroke-dasharray: 8, 8;
+            animation: flow-animation 1.5s infinite linear;
+        }
+        @keyframes flow-animation {
+            to { stroke-dashoffset: -16; }
+        }
+        
+        .thermal-pulse {
+            animation: thermal-pulse-anim 2s infinite ease-in-out;
+        }
+        @keyframes thermal-pulse-anim {
+            0%, 100% { opacity: 0.85; filter: drop-shadow(0 0 4px var(--glow-color)); }
+            50% { opacity: 1; filter: drop-shadow(0 0 16px var(--glow-color)); }
+        }
+
+        @media (max-width: 768px) {
+            .calc-container {
+                margin: 100px 16px 40px;
+                padding: 24px 16px;
+                width: auto;
+            }
+            .calc-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .result-cards {
+                grid-template-columns: 1fr;
+            }
+            .severity-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .sim-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============ NAVBAR ============ -->
+    <nav class="navbar scrolled" id="navbar" style="background: rgba(10, 10, 15, 0.95); padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3" />
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
+                </span>
+                <span class="logo-text">termografista<span class="logo-dot">.com.br</span></span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html#conhecimento" class="nav-link">Conhecimento</a>
+                <a href="index.html#ferramentas" class="nav-link">Ferramentas</a>
+                <a href="index.html#noticias" class="nav-link">Notícias</a>
+                <a href="index.html#comunidade" class="nav-link nav-link-cta">Participar</a>
+
+                <!-- Barra de Pesquisa Expansível -->
+                <div class="search-container">
+                    <form action="pesquisa.html" method="GET" target="_blank" class="search-form">
+                        <input type="text" name="q" class="search-input" placeholder="Pesquisar..." required>
+                        <button type="submit" class="search-btn" aria-label="Pesquisar">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ============ CALCULATOR SECTION ============ -->
+    <div class="container">
+        <div class="calc-container">
+            <div class="calc-header">
+                <div class="hero-badge" style="margin-bottom: 16px;">CORREÇÃO DE CARGA ELÉTRICA</div>
+                <h1 class="section-title">Calculadora de FCC</h1>
+                <p class="section-desc">Estime o aumento de temperatura projetado a plena carga (corrente máxima) a partir de leituras sob carga parcial pelos métodos de fator de correção Teórico e Real.</p>
+            </div>
+
+            <!-- APENAS 3 CAMPOS DE ENTRADA -->
+            <div class="calc-grid">
+                <div class="input-group">
+                    <label for="tempDelta">Delta de Temperatura (&Delta;T em &deg;C)</label>
+                    <input type="number" id="tempDelta" placeholder="Ex: 35" min="0" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="correnteDurante">Corrente Durante a Inspeção (A)</label>
+                    <input type="number" id="correnteDurante" placeholder="Ex: 160" min="1">
+                </div>
+                <div class="input-group">
+                    <label for="correnteMaxima">Corrente Máxima / Nominal (A)</label>
+                    <input type="number" id="correnteMaxima" placeholder="Ex: 600" min="1">
+                </div>
+            </div>
+
+            <div class="results-section">
+                <h3 style="text-align: center; margin-bottom: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1.1rem;">Resultados Comparativos</h3>
+                
+                <!-- DOIS MÉTODOS DE RESULTADO LADO A LADO -->
+                <div class="result-cards">
+                    <div class="result-card" style="border-color: rgba(240, 165, 0, 0.15);">
+                        <h4>FCC Delta Teórico (n = 2.0)</h4>
+                        <div class="result-value" id="dtTeorico" style="color: var(--accent-yellow);">--</div>
+                        <div class="result-unit">&deg;C</div>
+                    </div>
+                    <div class="result-card" style="border-color: rgba(74, 222, 128, 0.15);">
+                        <h4>FCC Delta Real (n = 1.4)</h4>
+                        <div class="result-value" id="dtReal" style="color: #4ade80;">--</div>
+                        <div class="result-unit">&deg;C</div>
+                    </div>
+                </div>
+
+                <!-- Quadro Comparativo de Severidade -->
+                <div class="severity-comparison-box">
+                    <div class="severity-header">Avaliação de Severidade (Critérios NETA MTS)</div>
+                    <div class="severity-grid">
+                        <div class="severity-col" id="severityTeoricaCol">
+                            <span class="severity-col-title">Modelo Teórico</span>
+                            <span class="severity-badge" id="severityTeoricaBadge">--</span>
+                            <p class="severity-desc" id="severityTeoricaDesc">--</p>
+                        </div>
+                        <div class="severity-col" id="severityRealCol">
+                            <span class="severity-col-title">Modelo Real (Físico)</span>
+                            <span class="severity-badge" id="severityRealBadge">--</span>
+                            <p class="severity-desc" id="severityRealDesc">--</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SIMULADOR VISUAL INTERATIVO DE COMPARAÇÃO -->
+                <div class="sim-container">
+                    <div class="sim-title">Comparação de Aquecimento dos Métodos</div>
+                    <div class="sim-grid">
+                        
+                        <!-- Lado 1: Modelo Teórico -->
+                        <div class="sim-card">
+                            <div class="sim-card-title">Modelo Teórico (Quadrático Puro - n = 2.0)</div>
+                            <div class="sim-svg-wrapper">
+                                <svg viewBox="0 0 300 150">
+                                    <defs>
+                                        <linearGradient id="cableTeoricoGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="#1e1e2e" />
+                                            <stop offset="50%" id="teoricoHotspotColor" stop-color="#fbbf24" />
+                                            <stop offset="100%" stop-color="#1e1e2e" />
+                                        </linearGradient>
+                                    </defs>
+                                    <!-- Barramento Principal -->
+                                    <rect x="20" y="60" width="260" height="30" rx="4" fill="url(#cableTeoricoGrad)" id="teoricoBar" class="glow-filter" />
+                                    <!-- Fluxo de Corrente -->
+                                    <line x1="30" y1="75" x2="270" y2="75" stroke="#ffffff" stroke-width="2" class="cable-flow" opacity="0.6" id="teoricoFlow" />
+                                    <!-- Ponto de Conexão -->
+                                    <circle cx="150" cy="75" r="18" fill="#12121a" stroke="rgba(255, 255, 255, 0.2)" stroke-width="2" />
+                                    <circle cx="150" cy="75" r="8" id="teoricoParafuso" fill="#fbbf24" class="glow-filter" />
+                                    <!-- Temperatura flutuante -->
+                                    <text x="150" y="125" fill="#f0f0f5" font-family="'Inter', sans-serif" font-weight="700" font-size="14" text-anchor="middle">
+                                        <tspan id="simTeoricoTemp">--</tspan> &deg;C
+                                    </text>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Lado 2: Modelo Real -->
+                        <div class="sim-card">
+                            <div class="sim-card-title">Modelo Real (Físico / Convectivo - n = 1.4)</div>
+                            <div class="sim-svg-wrapper">
+                                <svg viewBox="0 0 300 150">
+                                    <defs>
+                                        <linearGradient id="cableRealGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="#1e1e2e" />
+                                            <stop offset="50%" id="realHotspotColor" stop-color="#4ade80" />
+                                            <stop offset="100%" stop-color="#1e1e2e" />
+                                        </linearGradient>
+                                    </defs>
+                                    <!-- Barramento Principal -->
+                                    <rect x="20" y="60" width="260" height="30" rx="4" fill="url(#cableRealGrad)" id="realBar" class="glow-filter" />
+                                    <!-- Fluxo de Corrente -->
+                                    <line x1="30" y1="75" x2="270" y2="75" stroke="#ffffff" stroke-width="2" class="cable-flow" opacity="0.6" id="realFlow" />
+                                    <!-- Ponto de Conexão -->
+                                    <circle cx="150" cy="75" r="18" fill="#12121a" stroke="rgba(255, 255, 255, 0.2)" stroke-width="2" />
+                                    <circle cx="150" cy="75" r="8" id="realParafuso" fill="#4ade80" class="glow-filter" />
+                                    <!-- Temperatura flutuante -->
+                                    <text x="150" y="125" fill="#f0f0f5" font-family="'Inter', sans-serif" font-weight="700" font-size="14" text-anchor="middle">
+                                        <tspan id="simRealTemp">--</tspan> &deg;C
+                                    </text>
+                                </svg>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <p style="text-align: center; margin-top:36px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+                    * <strong>Diferença Metodológica:</strong> O Fator de Correção Teórico ($n = 2.0$) assume condições ideais de resistência pura e ausência de resfriamento. O Fator de Correção Real ($n = 1.4$) é comumente empregado em campo por se alinhar mais às perdas de calor reais por convecção em barramentos e cabos ao ar livre, evitando falsos alarmes exagerados.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Lógica de cálculo principal
+        function calcular() {
+            const dtMedido = parseFloat(document.getElementById('tempDelta').value);
+            const iDurante = parseFloat(document.getElementById('correnteDurante').value);
+            const iMaxima = parseFloat(document.getElementById('correnteMaxima').value);
+
+            // Validações básicas
+            if (isNaN(dtMedido) || isNaN(iDurante) || isNaN(iMaxima) || iDurante <= 0 || iMaxima <= 0 || dtMedido < 0) {
+                zerarCampos();
+                return;
+            }
+
+            const razaoCarga = iMaxima / iDurante;
+
+            // 1. FCC Delta Teórico (n = 2.0)
+            const dtTeoricoVal = Math.pow(razaoCarga, 2.0) * dtMedido;
+            
+            // 2. FCC Delta Real (n = 1.4)
+            const dtRealVal = Math.pow(razaoCarga, 1.4) * dtMedido;
+
+            // Preencher campos de texto na tela (truncamento para baixo conforme regra do usuário)
+            document.getElementById('dtTeorico').textContent = Math.floor(dtTeoricoVal);
+            document.getElementById('dtReal').textContent = Math.floor(dtRealVal);
+
+            // Determinar severidades NETA MTS baseadas em Delta T
+            const sevTeorica = obterSeveridade(dtTeoricoVal);
+            const sevReal = obterSeveridade(dtRealVal);
+
+            // Atualizar os quadros de severidade
+            atualizarQuadroSeveridade('severityTeoricaCol', 'severityTeoricaBadge', 'severityTeoricaDesc', sevTeorica);
+            atualizarQuadroSeveridade('severityRealCol', 'severityRealBadge', 'severityRealDesc', sevReal);
+
+            // Atualizar o simulador visual SVG
+            atualizarSimulador(dtTeoricoVal, dtRealVal, sevTeorica, sevReal);
+        }
+
+        function zerarCampos() {
+            document.getElementById('dtTeorico').textContent = '--';
+            document.getElementById('dtReal').textContent = '--';
+
+            document.getElementById('severityTeoricaBadge').textContent = '--';
+            document.getElementById('severityTeoricaBadge').className = 'severity-badge';
+            document.getElementById('severityTeoricaDesc').textContent = '--';
+
+            document.getElementById('severityRealBadge').textContent = '--';
+            document.getElementById('severityRealBadge').className = 'severity-badge';
+            document.getElementById('severityRealDesc').textContent = '--';
+        }
+
+        // Critérios NETA MTS para Severidade de Delta T
+        function obterSeveridade(dt) {
+            if (dt <= 3.0) {
+                return {
+                    class: 'status-normal',
+                    badgeClass: 'badge-normal',
+                    label: 'Baixa / Normal',
+                    desc: 'Diferença de temperatura pequena. Investigar no próximo ciclo de manutenção de rotina.'
+                };
+            } else if (dt <= 15.0) {
+                return {
+                    class: 'status-alert',
+                    badgeClass: 'badge-alert',
+                    label: 'Moderada / Alerta',
+                    desc: 'Diferença de temperatura perceptível. Planejar reparo ou reaperto na próxima oportunidade de parada.'
+                };
+            } else {
+                return {
+                    class: 'status-critical',
+                    badgeClass: 'badge-critical',
+                    label: 'Alta / Crítico',
+                    desc: 'Anomalia grave constatada. Risco imediato de falha do isolamento ou fusão. Recomenda-se intervenção urgente!'
+                };
+            }
+        }
+
+        function atualizarQuadroSeveridade(colId, badgeId, descId, sev) {
+            const col = document.getElementById(colId);
+            const badge = document.getElementById(badgeId);
+            const desc = document.getElementById(descId);
+
+            col.className = `severity-col ${sev.class}`;
+            badge.textContent = sev.label;
+            badge.className = `severity-badge ${sev.badgeClass}`;
+            desc.textContent = sev.desc;
+        }
+
+        function atualizarSimulador(dtTeorico, dtReal, sevTeorica, sevReal) {
+            // Temperaturas sob os SVGs (truncamento para baixo — consistente com os cartões de resultado)
+            document.getElementById('simTeoricoTemp').textContent = Math.floor(dtTeorico);
+            document.getElementById('simRealTemp').textContent = Math.floor(dtReal);
+
+            // Mapeamento de cores baseado na severidade
+            const colorMap = {
+                'status-normal': '#4ade80',    // Verde
+                'status-alert': '#fbbf24',     // Amarelo
+                'status-critical': '#f87171'   // Vermelho
+            };
+
+            const colorTeorico = colorMap[sevTeorica.class];
+            const colorReal = colorMap[sevReal.class];
+
+            // Atualizar cores e glows do lado Teórico
+            document.getElementById('teoricoHotspotColor').setAttribute('stop-color', colorTeorico);
+            const parafusoTeorico = document.getElementById('teoricoParafuso');
+            parafusoTeorico.setAttribute('fill', colorTeorico);
+            parafusoTeorico.style.setProperty('--glow-color', colorTeorico);
+            document.getElementById('teoricoBar').style.setProperty('--glow-color', colorTeorico);
+
+            // Fluxo teórico (rápido se for crítico)
+            const teoricoFlow = document.getElementById('teoricoFlow');
+            teoricoFlow.style.stroke = colorTeorico;
+            teoricoFlow.style.animationDuration = sevTeorica.class === 'status-critical' ? '0.6s' : '1.2s';
+
+            // Atualizar cores e glows do lado Real
+            document.getElementById('realHotspotColor').setAttribute('stop-color', colorReal);
+            const parafusoReal = document.getElementById('realParafuso');
+            parafusoReal.setAttribute('fill', colorReal);
+            parafusoReal.style.setProperty('--glow-color', colorReal);
+            document.getElementById('realBar').style.setProperty('--glow-color', colorReal);
+
+            // Fluxo real
+            const realFlow = document.getElementById('realFlow');
+            realFlow.style.stroke = colorReal;
+            realFlow.style.animationDuration = sevReal.class === 'status-critical' ? '0.6s' : '1.2s';
+
+            // Efeito pulsante térmico se estiver crítico
+            if (sevTeorica.class === 'status-critical') {
+                parafusoTeorico.classList.add('thermal-pulse');
+            } else {
+                parafusoTeorico.classList.remove('thermal-pulse');
+            }
+
+            if (sevReal.class === 'status-critical') {
+                parafusoReal.classList.add('thermal-pulse');
+            } else {
+                parafusoReal.classList.remove('thermal-pulse');
+            }
+        }
+
+        // Vincular eventos de digitação
+        ['tempDelta', 'correnteDurante', 'correnteMaxima'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calcular);
+        });
+
+        // Inicializar os cálculos
+        calcular();
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>
