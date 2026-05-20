@@ -30,27 +30,97 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 24px;
+            min-width: 0;
         }
 
         .calc-grid-single {
             display: grid;
             grid-template-columns: 1fr;
             gap: 24px;
+            min-width: 0;
+        }
+
+        .formula-panel {
+            margin: 0 auto 32px;
+            max-width: 720px;
+            padding: 24px 28px;
+            border-radius: 20px;
+            border: 1px solid rgba(240, 165, 0, 0.18);
+            background:
+                radial-gradient(circle at top left, rgba(240, 165, 0, 0.16), transparent 42%),
+                linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
+            box-shadow: var(--shadow-glow);
+            text-align: center;
+        }
+
+        .formula-label {
+            display: inline-block;
+            margin-bottom: 14px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(240, 165, 0, 0.1);
+            color: var(--accent-yellow);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .formula-equation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            color: var(--text-primary);
+        }
+
+        .formula-term {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(2rem, 4vw, 3.25rem);
+            font-style: italic;
+            line-height: 1;
+            letter-spacing: -0.03em;
+        }
+
+        .formula-term sub {
+            font-size: 0.52em;
+            font-style: normal;
+            vertical-align: -0.35em;
+        }
+
+        .formula-operator {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            color: rgba(240, 240, 245, 0.88);
+        }
+
+        .formula-caption {
+            margin-top: 16px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
         }
 
         .input-group {
             display: flex;
             flex-direction: column;
             gap: 8px;
+            min-width: 0;
         }
 
         .input-group label {
             font-size: 0.9rem;
             color: var(--text-secondary);
             font-weight: 600;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
         }
 
         .input-group input {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
             padding: 14px 16px;
             border-radius: 8px;
             background: var(--bg-primary);
@@ -169,6 +239,20 @@
                 width: auto;
             }
 
+            .formula-panel {
+                padding: 20px 16px;
+                margin-bottom: 24px;
+            }
+
+            .formula-equation {
+                gap: 10px;
+            }
+
+            .input-group input {
+                padding: 14px;
+                font-size: 1rem;
+            }
+
             .calc-grid,
             .calc-grid-single,
             .result-cards {
@@ -226,6 +310,18 @@
                 <div class="hero-badge" style="margin-bottom: 16px;">CORREÇÃO POR VENTO</div>
                 <h1 class="section-title">Calculadora de FCV</h1>
                 <p class="section-desc">Aplique o fator de correção do vento para estimar a temperatura corrigida do objeto a partir da temperatura medida e da velocidade do vento no ponto da inspeção.</p>
+            </div>
+
+            <div class="formula-panel" aria-label="Fórmula da calculadora de FCV">
+                <div class="formula-label">Fórmula aplicada</div>
+                <div class="formula-equation">
+                    <span class="formula-term">T<sub>corrigida</sub></span>
+                    <span class="formula-operator">=</span>
+                    <span class="formula-term">T<sub>medida</sub></span>
+                    <span class="formula-operator">×</span>
+                    <span class="formula-term">FCV</span>
+                </div>
+                <p class="formula-caption">A temperatura corrigida é calculada multiplicando a temperatura medida pelo fator de correção do vento.</p>
             </div>
 
             <div class="calc-grid-single">
