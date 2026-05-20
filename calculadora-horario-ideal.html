@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Horário Ideal para Termovisão | Termografista.com.br</title>
+    <meta name="description" content="Calcule o horário ideal para iniciar a inspeção termográfica com base no município e no horário do pôr do sol.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .calc-container {
+            max-width: 900px;
+            margin: 140px auto 80px;
+            padding: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+        }
+
+        .calc-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .calc-grid-single {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            min-width: 0;
+        }
+
+        .formula-panel {
+            margin: 0 auto 32px;
+            max-width: 760px;
+            padding: 24px 28px;
+            border-radius: 20px;
+            border: 1px solid rgba(240, 165, 0, 0.18);
+            background:
+                radial-gradient(circle at top left, rgba(240, 165, 0, 0.16), transparent 42%),
+                linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
+            box-shadow: var(--shadow-glow);
+            text-align: center;
+        }
+
+        .formula-label {
+            display: inline-block;
+            margin-bottom: 14px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(240, 165, 0, 0.1);
+            color: var(--accent-yellow);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .formula-equation {
+            color: var(--text-primary);
+            font-size: clamp(1.2rem, 2vw, 1.45rem);
+            font-weight: 700;
+            line-height: 1.6;
+        }
+
+        .formula-caption {
+            margin-top: 14px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .input-group label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .input-group input {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            padding: 14px 16px;
+            border-radius: 8px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
+            font-size: 1.05rem;
+            transition: all var(--transition-fast);
+            font-family: inherit;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--accent-yellow);
+            box-shadow: 0 0 0 2px rgba(240, 165, 0, 0.2);
+        }
+
+        .input-hint {
+            margin-top: 6px;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        .actions-row {
+            display: flex;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .calc-button {
+            width: 100%;
+            padding: 14px 22px;
+            border: 0;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent-yellow), var(--accent-orange));
+            color: #0a0a0f;
+            font-size: 0.98rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
+            box-shadow: 0 4px 20px rgba(240, 165, 0, 0.25);
+            font-family: inherit;
+        }
+
+        .calc-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(240, 165, 0, 0.35);
+        }
+
+        .calc-button:disabled {
+            cursor: wait;
+            opacity: 0.7;
+            transform: none;
+        }
+
+        .results-section {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .result-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all var(--transition-fast);
+        }
+
+        .result-card h4 {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .result-card-ideal .result-value {
+            color: var(--accent-yellow);
+        }
+
+        .result-unit {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-top: -2px;
+        }
+
+        .status-message {
+            min-height: 28px;
+            margin-top: 24px;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .status-message.is-warning {
+            color: #fbbf24;
+        }
+
+        .status-message.is-error {
+            color: #f87171;
+        }
+
+        .city-meta {
+            min-height: 24px;
+            margin-top: 10px;
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            text-align: center;
+        }
+
+        .calc-note {
+            margin-top: 28px;
+            padding: 18px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(240, 165, 0, 0.15);
+            background: rgba(240, 165, 0, 0.04);
+            color: var(--text-secondary);
+            font-size: 0.96rem;
+            line-height: 1.75;
+        }
+
+        .calc-note strong {
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 768px) {
+            .calc-container {
+                margin: 100px 16px 40px;
+                padding: 24px 16px;
+                width: auto;
+            }
+
+            .formula-panel {
+                padding: 20px 16px;
+                margin-bottom: 24px;
+            }
+
+            .result-cards {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .input-group input {
+                padding: 14px;
+                font-size: 1rem;
+            }
+
+            .result-value {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar scrolled" id="navbar" style="background: rgba(10, 10, 15, 0.95); padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3" />
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
+                </span>
+                <span class="logo-text">termografista<span class="logo-dot">.com.br</span></span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html#conhecimento" class="nav-link">Conhecimento</a>
+                <a href="index.html#ferramentas" class="nav-link">Ferramentas</a>
+                <a href="index.html#noticias" class="nav-link">Notícias</a>
+                <a href="index.html#comunidade" class="nav-link nav-link-cta">Participar</a>
+
+                <div class="search-container">
+                    <form action="pesquisa.html" method="GET" target="_blank" class="search-form">
+                        <input type="text" name="q" class="search-input" placeholder="Pesquisar..." required>
+                        <button type="submit" class="search-btn" aria-label="Pesquisar">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="calc-container">
+            <div class="calc-header">
+                <div class="hero-badge" style="margin-bottom: 16px;">PLANEJAMENTO DE INSPEÇÃO</div>
+                <h1 class="section-title">Calculadora de Horário Ideal para Termovisão</h1>
+                <p class="section-desc">Informe o município para consultar o pôr do sol do dia e descobrir o horário recomendado para iniciar a inspeção termográfica.</p>
+            </div>
+
+            <div class="formula-panel" aria-label="Critério de cálculo do horário ideal">
+                <div class="formula-label">Critério aplicado</div>
+                <div class="formula-equation">Horário ideal = pôr do sol + 90 minutos</div>
+                <p class="formula-caption">A calculadora usa o município informado para localizar o pôr do sol do dia e somar automaticamente 1 hora e 30 minutos ao horário obtido.</p>
+            </div>
+
+            <div class="calc-grid-single">
+                <div class="input-group">
+                    <label for="cidade">Local do Brasil — Cidade, Estado</label>
+                    <input id="cidade" list="listaCidades" placeholder="Ex.: Sinop, MT" autocomplete="off">
+                    <datalist id="listaCidades"></datalist>
+                    <div class="input-hint">Use o formato <strong>cidade, UF</strong>. A lista de municípios brasileiros é carregada automaticamente para facilitar a busca.</div>
+                </div>
+            </div>
+
+            <div class="actions-row">
+                <button type="button" id="botaoCalcular" class="calc-button">Calcular horário ideal</button>
+            </div>
+
+            <div class="results-section">
+                <h3 style="text-align: center; margin-bottom: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1.1rem;">Resultado</h3>
+
+                <div class="result-cards">
+                    <div class="result-card">
+                        <h4>Pôr do sol</h4>
+                        <div class="result-value" id="porSol">--:--</div>
+                        <div class="result-unit">horário local</div>
+                    </div>
+                    <div class="result-card result-card-ideal" style="border-color: rgba(240, 165, 0, 0.15);">
+                        <h4>Horário ideal para inspeção</h4>
+                        <div class="result-value" id="horarioIdeal">--:--</div>
+                        <div class="result-unit">pôr do sol + 90 min</div>
+                    </div>
+                </div>
+
+                <div class="city-meta" id="cidadeConfirmada" aria-live="polite"></div>
+                <div class="status-message" id="statusMensagem" aria-live="polite"></div>
+
+                <div class="calc-note">
+                    <strong>Observação:</strong> esta ferramenta considera o pôr do sol da data atual no município informado e aplica automaticamente o critério de início de inspeção 90 minutos depois.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const campoCidade = document.getElementById('cidade');
+        const listaCidades = document.getElementById('listaCidades');
+        const botaoCalcular = document.getElementById('botaoCalcular');
+        const campoPorSol = document.getElementById('porSol');
+        const campoHorarioIdeal = document.getElementById('horarioIdeal');
+        const campoStatusMensagem = document.getElementById('statusMensagem');
+        const campoCidadeConfirmada = document.getElementById('cidadeConfirmada');
+        const CACHE_KEY = 'termografista_cidades_ibge_v1';
+        const CACHE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
+
+        function limparResultado() {
+            campoPorSol.textContent = '--:--';
+            campoHorarioIdeal.textContent = '--:--';
+            campoCidadeConfirmada.textContent = '';
+        }
+
+        function limparStatus() {
+            campoStatusMensagem.textContent = '';
+            campoStatusMensagem.classList.remove('is-warning', 'is-error');
+        }
+
+        function definirStatus(mensagem, tipo) {
+            campoStatusMensagem.textContent = mensagem;
+            campoStatusMensagem.classList.remove('is-warning', 'is-error');
+            if (tipo) {
+                campoStatusMensagem.classList.add(tipo);
+            }
+        }
+
+        function normalizarTexto(valor) {
+            return valor
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .trim();
+        }
+
+        function parseLocal(local) {
+            const partes = local.split(',').map((item) => item.trim()).filter(Boolean);
+            if (!partes.length) {
+                return { cidade: '', uf: '' };
+            }
+
+            return {
+                cidade: partes[0],
+                uf: partes[1] ? partes[1].toUpperCase() : ''
+            };
+        }
+
+        function preencherDatalist(cidades) {
+            listaCidades.innerHTML = '';
+            const fragmento = document.createDocumentFragment();
+
+            cidades.forEach((cidade) => {
+                const option = document.createElement('option');
+                option.value = cidade;
+                fragmento.appendChild(option);
+            });
+
+            listaCidades.appendChild(fragmento);
+        }
+
+        async function carregarCidades() {
+            try {
+                const cacheBruto = localStorage.getItem(CACHE_KEY);
+                if (cacheBruto) {
+                    const cache = JSON.parse(cacheBruto);
+                    if (cache.timestamp && Array.isArray(cache.cidades) && Date.now() - cache.timestamp < CACHE_MAX_AGE_MS) {
+                        preencherDatalist(cache.cidades);
+                        return;
+                    }
+                }
+            } catch (error) {
+                // Ignora erro de cache e tenta carregar da API.
+            }
+
+            try {
+                const resposta = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/municipios');
+                if (!resposta.ok) {
+                    throw new Error('Falha ao carregar municípios.');
+                }
+
+                const municipios = await resposta.json();
+                const cidades = municipios
+                    .map((municipio) => {
+                        const uf = municipio.microrregiao?.mesorregiao?.UF?.sigla;
+                        if (!municipio.nome || !uf) {
+                            return null;
+                        }
+                        return `${municipio.nome}, ${uf}`;
+                    })
+                    .filter(Boolean)
+                    .sort((cidadeA, cidadeB) => cidadeA.localeCompare(cidadeB, 'pt-BR'));
+
+                preencherDatalist(cidades);
+
+                try {
+                    localStorage.setItem(CACHE_KEY, JSON.stringify({
+                        timestamp: Date.now(),
+                        cidades
+                    }));
+                } catch (error) {
+                    // Segue sem cache caso o navegador bloqueie armazenamento.
+                }
+            } catch (error) {
+                definirStatus('Não foi possível carregar a lista automática de municípios. Você ainda pode digitar manualmente no formato cidade, UF.', 'is-warning');
+            }
+        }
+
+        async function buscarCoordenadas(localDigitado) {
+            const resposta = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&countrycodes=br&limit=5&q=${encodeURIComponent(`${localDigitado}, Brasil`)}`);
+            if (!resposta.ok) {
+                throw new Error('Falha ao consultar geolocalização.');
+            }
+
+            const resultados = await resposta.json();
+            if (!Array.isArray(resultados) || !resultados.length) {
+                return null;
+            }
+
+            const { cidade, uf } = parseLocal(localDigitado);
+            const cidadeNormalizada = normalizarTexto(cidade);
+            const ufNormalizada = normalizarTexto(uf);
+
+            const resultadoFiltrado = resultados.find((item) => {
+                const descricao = normalizarTexto(item.display_name || '');
+                const cidadeConfere = cidadeNormalizada ? descricao.includes(cidadeNormalizada) : true;
+                const ufConfere = ufNormalizada ? descricao.includes(ufNormalizada) : true;
+                return cidadeConfere && ufConfere;
+            }) || resultados[0];
+
+            return {
+                latitude: Number(resultadoFiltrado.lat),
+                longitude: Number(resultadoFiltrado.lon),
+                descricao: resultadoFiltrado.display_name || localDigitado
+            };
+        }
+
+        async function buscarPorDoSol(latitude, longitude) {
+            const resposta = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=sunset&timezone=auto&forecast_days=1`);
+            if (!resposta.ok) {
+                throw new Error('Falha ao consultar pôr do sol.');
+            }
+
+            const dados = await resposta.json();
+            const sunset = dados.daily?.sunset?.[0];
+            if (!sunset) {
+                return null;
+            }
+
+            return {
+                sunset
+            };
+        }
+
+        function extrairHorarioIsoLocal(isoLocal) {
+            const trechoHorario = isoLocal.split('T')[1] || '';
+            const [hora = '00', minuto = '00'] = trechoHorario.split(':');
+            return `${hora.padStart(2, '0')}:${minuto.padStart(2, '0')}`;
+        }
+
+        function somarMinutosAoHorario(horario, minutosAdicionais) {
+            const [horaTexto, minutoTexto] = horario.split(':');
+            const totalMinutos = (Number(horaTexto) * 60) + Number(minutoTexto) + minutosAdicionais;
+            const minutosNoDia = ((totalMinutos % 1440) + 1440) % 1440;
+            const horas = Math.floor(minutosNoDia / 60);
+            const minutos = minutosNoDia % 60;
+            return `${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}`;
+        }
+
+        async function calcularHorarioIdeal() {
+            const local = campoCidade.value.trim();
+            limparStatus();
+            limparResultado();
+
+            if (!local) {
+                definirStatus('Informe a cidade e o estado no formato cidade, UF.', 'is-error');
+                return;
+            }
+
+            botaoCalcular.disabled = true;
+            botaoCalcular.textContent = 'Consultando horário...';
+
+            try {
+                const coordenadas = await buscarCoordenadas(local);
+                if (!coordenadas) {
+                    definirStatus('Local não encontrado. Use o formato cidade, UF.', 'is-error');
+                    return;
+                }
+
+                const porDoSol = await buscarPorDoSol(coordenadas.latitude, coordenadas.longitude);
+                if (!porDoSol) {
+                    definirStatus('Não foi possível consultar o horário do pôr do sol para o município informado.', 'is-error');
+                    return;
+                }
+
+                const horarioPorSol = extrairHorarioIsoLocal(porDoSol.sunset);
+                const horarioIdeal = somarMinutosAoHorario(horarioPorSol, 90);
+
+                campoPorSol.textContent = horarioPorSol;
+                campoHorarioIdeal.textContent = horarioIdeal;
+                campoCidadeConfirmada.textContent = `Município localizado: ${coordenadas.descricao}`;
+            } catch (error) {
+                definirStatus('Erro na consulta. Verifique sua conexão e tente novamente.', 'is-error');
+            } finally {
+                botaoCalcular.disabled = false;
+                botaoCalcular.textContent = 'Calcular horário ideal';
+            }
+        }
+
+        botaoCalcular.addEventListener('click', calcularHorarioIdeal);
+        campoCidade.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                calcularHorarioIdeal();
+            }
+        });
+
+        carregarCidades();
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>
