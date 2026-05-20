@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de FCV - Fator de Correção do Vento | Termografista.com.br</title>
+    <meta name="description" content="Calcule o fator de correção do vento e estime a temperatura corrigida do objeto inspecionado em termografia.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .calc-container {
+            max-width: 900px;
+            margin: 140px auto 80px;
+            padding: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+        }
+
+        .calc-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .calc-grid-single {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .input-group input {
+            padding: 14px 16px;
+            border-radius: 8px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
+            font-size: 1.05rem;
+            transition: all var(--transition-fast);
+            font-family: inherit;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--accent-yellow);
+            box-shadow: 0 0 0 2px rgba(240, 165, 0, 0.2);
+        }
+
+        .results-section {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .result-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all var(--transition-fast);
+        }
+
+        .result-card h4 {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .result-unit {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-top: -2px;
+        }
+
+        .status-message {
+            min-height: 28px;
+            margin-top: 24px;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .status-message.is-warning {
+            color: #fbbf24;
+        }
+
+        .field-hint {
+            margin-top: 6px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(240, 165, 0, 0.12);
+            background: rgba(240, 165, 0, 0.05);
+            color: var(--accent-yellow);
+            font-size: 0.92rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .conversion-box {
+            min-height: 52px;
+            margin-top: 24px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            background: rgba(0, 206, 201, 0.08);
+            border: 1px solid rgba(0, 206, 201, 0.18);
+            color: #8ff3ef;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .calc-note {
+            margin-top: 28px;
+            padding: 18px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(240, 165, 0, 0.15);
+            background: rgba(240, 165, 0, 0.04);
+            color: var(--text-secondary);
+            font-size: 0.96rem;
+            line-height: 1.75;
+        }
+
+        .calc-note strong {
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 768px) {
+            .calc-container {
+                margin: 100px 16px 40px;
+                padding: 24px 16px;
+                width: auto;
+            }
+
+            .calc-grid,
+            .calc-grid-single,
+            .result-cards {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .result-value {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar scrolled" id="navbar" style="background: rgba(10, 10, 15, 0.95); padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3" />
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
+                </span>
+                <span class="logo-text">termografista<span class="logo-dot">.com.br</span></span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html#conhecimento" class="nav-link">Conhecimento</a>
+                <a href="index.html#ferramentas" class="nav-link">Ferramentas</a>
+                <a href="index.html#noticias" class="nav-link">Notícias</a>
+                <a href="index.html#comunidade" class="nav-link nav-link-cta">Participar</a>
+
+                <div class="search-container">
+                    <form action="pesquisa.html" method="GET" target="_blank" class="search-form">
+                        <input type="text" name="q" class="search-input" placeholder="Pesquisar..." required>
+                        <button type="submit" class="search-btn" aria-label="Pesquisar">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="calc-container">
+            <div class="calc-header">
+                <div class="hero-badge" style="margin-bottom: 16px;">CORREÇÃO POR VENTO</div>
+                <h1 class="section-title">Calculadora de FCV</h1>
+                <p class="section-desc">Aplique o fator de correção do vento para estimar a temperatura corrigida do objeto a partir da temperatura medida e da velocidade do vento no ponto da inspeção.</p>
+            </div>
+
+            <div class="calc-grid-single">
+                <div class="input-group">
+                    <label for="temperaturaObjeto">Temperatura do objeto (°C)</label>
+                    <input type="text" id="temperaturaObjeto" inputmode="decimal" placeholder="Ex: 80">
+                </div>
+            </div>
+
+            <div class="field-hint">Preencha apenas um dos campos de velocidade abaixo.</div>
+
+            <div class="calc-grid" style="margin-top: 24px;">
+                <div class="input-group">
+                    <label for="velocidadeVentoMs">Velocidade do vento (m/s)</label>
+                    <input type="text" id="velocidadeVentoMs" inputmode="decimal" placeholder="Ex: 3">
+                </div>
+                <div class="input-group">
+                    <label for="velocidadeVentoKmh">Velocidade do vento (km/h)</label>
+                    <input type="text" id="velocidadeVentoKmh" inputmode="decimal" placeholder="Ex: 10,8">
+                </div>
+            </div>
+
+            <div class="results-section">
+                <h3 style="text-align: center; margin-bottom: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1.1rem;">Resultados</h3>
+
+                <div class="conversion-box" id="caixaConversao" aria-live="polite"></div>
+
+                <div class="result-cards">
+                    <div class="result-card" style="border-color: rgba(240, 165, 0, 0.15);">
+                        <h4>FCV - Fator de Correção do Vento</h4>
+                        <div class="result-value" id="valorFcv" style="color: var(--accent-yellow);">--</div>
+                        <div class="result-unit">fator</div>
+                    </div>
+                    <div class="result-card" style="border-color: rgba(74, 222, 128, 0.15);">
+                        <h4>Temperatura Corrigida</h4>
+                        <div class="result-value" id="temperaturaCorrigida" style="color: #4ade80;">--</div>
+                        <div class="result-unit">°C</div>
+                    </div>
+                </div>
+
+                <div class="status-message" id="statusMensagem" aria-live="polite"></div>
+
+                <div class="calc-note">
+                    <strong>Faixa considerada:</strong> a tabela utilizada nesta calculadora cobre velocidades de vento até 7 m/s.
+                    Acima disso, o sistema sinaliza que a velocidade está fora da faixa adotada para esta correção.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const campoTemperaturaObjeto = document.getElementById('temperaturaObjeto');
+        const campoVelocidadeVentoMs = document.getElementById('velocidadeVentoMs');
+        const campoVelocidadeVentoKmh = document.getElementById('velocidadeVentoKmh');
+        const campoValorFcv = document.getElementById('valorFcv');
+        const campoTemperaturaCorrigida = document.getElementById('temperaturaCorrigida');
+        const campoStatusMensagem = document.getElementById('statusMensagem');
+        const caixaConversao = document.getElementById('caixaConversao');
+
+        function normalizarNumero(valor) {
+            return parseFloat(valor.replace(',', '.').trim());
+        }
+
+        function formatarNumero(valor) {
+            return valor.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        function limparResultados() {
+            campoValorFcv.textContent = '--';
+            campoTemperaturaCorrigida.textContent = '--';
+            campoStatusMensagem.textContent = '';
+            campoStatusMensagem.classList.remove('is-warning');
+            caixaConversao.textContent = '';
+        }
+
+        function obterFatorCorrecaoVento(velocidadeVento) {
+            if (velocidadeVento <= 1) return 1;
+            if (velocidadeVento <= 2) return 1.37;
+            if (velocidadeVento <= 3) return 1.64;
+            if (velocidadeVento <= 4) return 1.86;
+            if (velocidadeVento <= 5) return 2.06;
+            if (velocidadeVento <= 6) return 2.23;
+            if (velocidadeVento <= 7) return 2.39;
+            return null;
+        }
+
+        function calcularFcv() {
+            const temperaturaObjeto = normalizarNumero(campoTemperaturaObjeto.value);
+            const textoVelocidadeMs = campoVelocidadeVentoMs.value.trim();
+            const textoVelocidadeKmh = campoVelocidadeVentoKmh.value.trim();
+            let velocidadeVento;
+
+            if (textoVelocidadeMs !== '' && textoVelocidadeKmh !== '') {
+                campoValorFcv.textContent = '--';
+                campoTemperaturaCorrigida.textContent = '--';
+                campoStatusMensagem.textContent = 'Preencha somente um campo de velocidade.';
+                campoStatusMensagem.classList.add('is-warning');
+                caixaConversao.textContent = '';
+                return;
+            }
+
+            if (textoVelocidadeMs !== '') {
+                velocidadeVento = normalizarNumero(textoVelocidadeMs);
+                if (Number.isFinite(velocidadeVento)) {
+                    caixaConversao.textContent = `Velocidade utilizada: ${formatarNumero(velocidadeVento)} m/s`;
+                } else {
+                    caixaConversao.textContent = '';
+                }
+            } else if (textoVelocidadeKmh !== '') {
+                const velocidadeKmh = normalizarNumero(textoVelocidadeKmh);
+                if (Number.isFinite(velocidadeKmh)) {
+                    velocidadeVento = velocidadeKmh / 3.6;
+                    caixaConversao.textContent = `Conversão automática: ${formatarNumero(velocidadeKmh)} km/h = ${formatarNumero(velocidadeVento)} m/s`;
+                } else {
+                    caixaConversao.textContent = '';
+                }
+            } else {
+                limparResultados();
+                return;
+            }
+
+            if (!Number.isFinite(temperaturaObjeto) || !Number.isFinite(velocidadeVento)) {
+                limparResultados();
+                return;
+            }
+
+            if (temperaturaObjeto < 0 || velocidadeVento <= 0) {
+                limparResultados();
+                return;
+            }
+
+            const fatorCorrecaoVento = obterFatorCorrecaoVento(velocidadeVento);
+
+            if (fatorCorrecaoVento === null) {
+                campoValorFcv.textContent = '--';
+                campoTemperaturaCorrigida.textContent = '--';
+                campoStatusMensagem.textContent = 'Velocidade alta: utilize valores até 7 m/s.';
+                campoStatusMensagem.classList.add('is-warning');
+                return;
+            }
+
+            const temperaturaCorrigida = fatorCorrecaoVento * temperaturaObjeto;
+
+            campoValorFcv.textContent = formatarNumero(fatorCorrecaoVento);
+            campoTemperaturaCorrigida.textContent = formatarNumero(temperaturaCorrigida);
+            campoStatusMensagem.textContent = '';
+            campoStatusMensagem.classList.remove('is-warning');
+        }
+
+        [campoTemperaturaObjeto, campoVelocidadeVentoMs, campoVelocidadeVentoKmh].forEach((campo) => {
+            campo.addEventListener('input', calcularFcv);
+        });
+
+        calcularFcv();
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>
