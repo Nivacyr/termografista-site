@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistente de Emissividade | Termografista.com.br</title>
+    <meta name="description"
+        content="Consulte valores de emissividade para materiais e componentes usados em inspeções termográficas.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .calc-container {
+            max-width: 1080px;
+            margin: 140px auto 80px;
+            padding: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+        }
+
+        .calc-header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .intro-panel {
+            margin: 0 auto 32px;
+            max-width: 760px;
+            padding: 24px 28px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 206, 201, 0.18);
+            background:
+                radial-gradient(circle at top left, rgba(0, 206, 201, 0.14), transparent 44%),
+                linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
+            box-shadow: var(--shadow-glow);
+            text-align: center;
+        }
+
+        .intro-label {
+            display: inline-block;
+            margin-bottom: 14px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(0, 206, 201, 0.1);
+            color: var(--accent-cyan);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .intro-panel p {
+            color: var(--text-secondary);
+            line-height: 1.75;
+            margin: 0;
+        }
+
+        .search-shell {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .search-panel,
+        .tips-panel,
+        .results-panel {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+        }
+
+        .search-panel,
+        .tips-panel {
+            padding: 24px;
+        }
+
+        .search-panel h3,
+        .tips-panel h3,
+        .results-panel h3 {
+            margin: 0 0 10px;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .panel-text {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+
+        .search-input-wrap {
+            position: relative;
+        }
+
+        .lookup-input {
+            width: 100%;
+            padding: 16px 18px;
+            border-radius: 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
+            font-size: 1.02rem;
+            transition: all var(--transition-fast);
+            font-family: inherit;
+        }
+
+        .lookup-input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 2px rgba(0, 206, 201, 0.18);
+        }
+
+        .quick-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .quick-tag {
+            border: 1px solid rgba(0, 206, 201, 0.16);
+            background: rgba(0, 206, 201, 0.08);
+            color: #95f8f3;
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .quick-tag:hover,
+        .quick-tag:focus-visible {
+            border-color: rgba(0, 206, 201, 0.34);
+            background: rgba(0, 206, 201, 0.14);
+            color: #c6fffb;
+            outline: none;
+        }
+
+        .tips-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .tip-card {
+            padding: 16px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(240, 165, 0, 0.12);
+            background: rgba(240, 165, 0, 0.05);
+        }
+
+        .tip-card strong {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .tip-card span {
+            color: var(--text-secondary);
+            font-size: 0.93rem;
+            line-height: 1.65;
+        }
+
+        .results-section {
+            margin-top: 28px;
+        }
+
+        .results-panel {
+            overflow: hidden;
+        }
+
+        .results-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: center;
+            padding: 24px 24px 18px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .results-head p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .results-count {
+            min-width: 72px;
+            text-align: center;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(0, 206, 201, 0.1);
+            color: var(--accent-cyan);
+            font-weight: 800;
+        }
+
+        .featured-result {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-light);
+            background:
+                linear-gradient(135deg, rgba(0, 206, 201, 0.08), rgba(255, 255, 255, 0.01));
+        }
+
+        .featured-label {
+            display: inline-block;
+            margin-bottom: 12px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+
+        .featured-material {
+            color: var(--text-primary);
+            font-size: 1.45rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .featured-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .featured-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+        }
+
+        .featured-note {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 620px;
+        }
+
+        .results-list {
+            display: grid;
+            gap: 0;
+        }
+
+        .result-item {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 16px;
+            align-items: center;
+            padding: 18px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            transition: background var(--transition-fast);
+        }
+
+        .result-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .result-item:first-child {
+            border-top: none;
+        }
+
+        .result-material {
+            color: var(--text-primary);
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        .result-value-chip {
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.14);
+            color: #86efac;
+            font-weight: 800;
+            min-width: 92px;
+            text-align: center;
+        }
+
+        .empty-state {
+            padding: 28px 24px 30px;
+            color: #fda4af;
+            line-height: 1.7;
+        }
+
+        .calc-note {
+            margin-top: 24px;
+            padding: 18px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(240, 165, 0, 0.15);
+            background: rgba(240, 165, 0, 0.04);
+            color: var(--text-secondary);
+            font-size: 0.96rem;
+            line-height: 1.75;
+        }
+
+        .calc-note strong {
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 900px) {
+            .search-shell {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .calc-container {
+                margin: 100px 16px 40px;
+                padding: 24px 16px;
+                width: auto;
+            }
+
+            .intro-panel,
+            .search-panel,
+            .tips-panel {
+                padding: 20px 16px;
+            }
+
+            .results-head,
+            .featured-result,
+            .result-item {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .results-head {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .results-count {
+                min-width: auto;
+            }
+
+            .featured-value {
+                font-size: 1.6rem;
+            }
+
+            .result-item {
+                grid-template-columns: 1fr;
+                align-items: start;
+            }
+
+            .result-value-chip {
+                justify-self: start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar scrolled" id="navbar"
+        style="background: rgba(10, 10, 15, 0.95); padding: 10px 0; border-bottom: 1px solid var(--border-subtle);">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
+                </span>
+                <span class="logo-text">termografista<span class="logo-dot">.com.br</span></span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html#conhecimento" class="nav-link">Conhecimento</a>
+                <a href="index.html#ferramentas" class="nav-link">Ferramentas</a>
+                <a href="index.html#noticias" class="nav-link">Notícias</a>
+                <a href="index.html#comunidade" class="nav-link nav-link-cta">Participar</a>
+
+                <div class="search-container">
+                    <form action="pesquisa.html" method="GET" target="_blank" class="search-form">
+                        <input type="text" name="q" class="search-input" placeholder="Pesquisar..." required>
+                        <button type="submit" class="search-btn" aria-label="Pesquisar">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="calc-container">
+            <div class="calc-header">
+                <div class="hero-badge" style="margin-bottom: 16px;">CONSULTA TÉCNICA</div>
+                <h1 class="section-title">Assistente de Emissividade</h1>
+                <p class="section-desc">
+                    Pesquise materiais, superfícies e componentes para encontrar um valor inicial de emissividade e
+                    configurar a câmera termográfica com mais confiança.
+                </p>
+            </div>
+
+            <div class="intro-panel" aria-label="Orientação de uso">
+                <div class="intro-label">Como usar</div>
+                <p>
+                    Digite o nome do material, da superfície ou do componente inspecionado. O assistente filtra a base
+                    em tempo real e destaca a melhor correspondência para acelerar o ajuste inicial em campo.
+                </p>
+            </div>
+
+            <div class="search-shell">
+                <div class="search-panel">
+                    <h3>Buscar material</h3>
+                    <p class="panel-text">
+                        Pesquise por termos como <strong>cobre</strong>, <strong>alumínio</strong>,
+                        <strong>porcelana</strong>, <strong>fita</strong>, <strong>óleo</strong> ou
+                        <strong>tinta</strong>.
+                    </p>
+
+                    <div class="search-input-wrap">
+                        <input type="text" id="pesquisa" class="lookup-input"
+                            placeholder="Ex: cobre, alumínio, porcelana, fita isolante..."
+                            autocomplete="off">
+                    </div>
+
+                    <div class="quick-tags" aria-label="Sugestões rápidas">
+                        <button class="quick-tag" type="button" data-term="cobre">Cobre</button>
+                        <button class="quick-tag" type="button" data-term="alumínio">Alumínio</button>
+                        <button class="quick-tag" type="button" data-term="aço">Aço</button>
+                        <button class="quick-tag" type="button" data-term="porcelana">Porcelana</button>
+                        <button class="quick-tag" type="button" data-term="tinta">Tinta</button>
+                        <button class="quick-tag" type="button" data-term="fita">Fita isolante</button>
+                        <button class="quick-tag" type="button" data-term="óleo">Óleo</button>
+                        <button class="quick-tag" type="button" data-term="plástico">Plástico</button>
+                    </div>
+                </div>
+
+                <div class="tips-panel">
+                    <h3>Boas práticas em campo</h3>
+                    <p class="panel-text">
+                        Em superfícies metálicas brilhantes e reflexivas, o erro de leitura pode ser significativo se a
+                        emissividade não for tratada corretamente.
+                    </p>
+
+                    <div class="tips-list">
+                        <div class="tip-card">
+                            <strong>Superfícies polidas</strong>
+                            <span>Use fita isolante preta, tinta fosca ou corretivo branco para criar uma referência
+                                com emissividade mais alta.</span>
+                        </div>
+                        <div class="tip-card">
+                            <strong>Oxidação muda o valor</strong>
+                            <span>O mesmo metal pode ter comportamento bem diferente quando está oxidado, jateado,
+                                anodizado ou polido.</span>
+                        </div>
+                        <div class="tip-card">
+                            <strong>Base para ajuste inicial</strong>
+                            <span>Considere esta consulta como ponto de partida. Para medições críticas, valide o
+                                ajuste no próprio ativo.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <div class="results-panel">
+                    <div class="results-head">
+                        <div>
+                            <h3>Resultados encontrados</h3>
+                            <p id="statusBusca">Digite pelo menos 2 caracteres para iniciar a pesquisa.</p>
+                        </div>
+                        <div class="results-count" id="contadorResultados">0 itens</div>
+                    </div>
+
+                    <div class="featured-result" id="resultadoDestaque" hidden>
+                        <div class="featured-label">Melhor correspondência</div>
+                        <div class="featured-material" id="materialDestaque">--</div>
+                        <div class="featured-meta">
+                            <div class="featured-value" id="valorDestaque">--</div>
+                            <div class="featured-note">
+                                Valor sugerido para configuração inicial da câmera. Confirme em campo quando houver
+                                impacto direto na análise ou no laudo técnico.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="results-list" id="resultados">
+                        <div class="empty-state">
+                            Nenhuma busca realizada ainda. Comece digitando um material ou use uma das sugestões
+                            rápidas acima.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calc-note">
+                    <strong>Observação:</strong> os valores apresentados são referências práticas para ajuste inicial de
+                    câmera termográfica. Em medições críticas, valide a emissividade em campo com fita padrão, tinta
+                    fosca, corretivo branco ou outro método adequado de comparação.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tabelaEmissividade = [
+            { material: "ABS Plástico", emissividade: "0,93" },
+            { material: "Acrílico PMMA", emissividade: "0,93" },
+            { material: "Aço carbono brilhante ou polido", emissividade: "0,10" },
+            { material: "Aço carbono fortemente oxidado", emissividade: "0,92" },
+            { material: "Aço carbono laminado a frio limpo", emissividade: "0,75" },
+            { material: "Aço carbono oxidado", emissividade: "0,79" },
+            { material: "Aço carbono rugoso ou sem polimento", emissividade: "0,97" },
+            { material: "Aço galvanizado brilhante", emissividade: "0,23" },
+            { material: "Aço galvanizado envelhecido ou oxidado", emissividade: "0,28" },
+            { material: "Aço inoxidável jateado", emissividade: "0,70" },
+            { material: "Aço inoxidável oxidado", emissividade: "0,83" },
+            { material: "Aço inoxidável polido", emissividade: "0,22" },
+            { material: "Água", emissividade: "0,98" },
+            { material: "Alumínio anodizado cinza fosco", emissividade: "0,97" },
+            { material: "Alumínio anodizado preto fosco", emissividade: "0,95" },
+            { material: "Alumínio chapa comercial", emissividade: "0,09" },
+            { material: "Alumínio fortemente oxidado", emissividade: "0,31" },
+            { material: "Alumínio limpo ou polido", emissividade: "0,05" },
+            { material: "Alumínio oxidado", emissividade: "0,24" },
+            { material: "Alumínio rugoso ou jateado", emissividade: "0,25" },
+            { material: "Argamassa ou reboco", emissividade: "0,90" },
+            { material: "Asfalto", emissividade: "0,94" },
+            { material: "Bloco terminal elétrico metálico", emissividade: "0,60" },
+            { material: "Borracha", emissividade: "0,94" },
+            { material: "Bucha de reator subestação", emissividade: "0,85" },
+            { material: "Cerâmica fosca", emissividade: "0,94" },
+            { material: "Concreto", emissividade: "0,94" },
+            { material: "Cobre mate", emissividade: "0,22" },
+            { material: "Cobre oxidado", emissividade: "0,71" },
+            { material: "Cobre oxidado escuro ou preto", emissividade: "0,81" },
+            { material: "Cobre polido", emissividade: "0,03" },
+            { material: "Corretivo líquido branco", emissividade: "0,95" },
+            { material: "Ferro fundido oxidado", emissividade: "0,71" },
+            { material: "Fita isolante elétrica preta", emissividade: "0,95" },
+            { material: "Gelo", emissividade: "0,98" },
+            { material: "Gesso", emissividade: "0,90" },
+            { material: "Granito bruto", emissividade: "0,84" },
+            { material: "Latão oxidado", emissividade: "0,58" },
+            { material: "Latão polido", emissividade: "0,03" },
+            { material: "Madeira natural", emissividade: "0,92" },
+            { material: "Níquel oxidado", emissividade: "0,40" },
+            { material: "Níquel polido", emissividade: "0,06" },
+            { material: "Óleo lubrificante ou óleo de transformador", emissividade: "0,82" },
+            { material: "Papel branco", emissividade: "0,93" },
+            { material: "Papel preto fosco", emissividade: "0,94" },
+            { material: "Pele humana", emissividade: "0,98" },
+            { material: "Plástico opaco ou preto", emissividade: "0,95" },
+            { material: "Porcelana", emissividade: "0,92" },
+            { material: "Porcelana vidrada", emissividade: "0,92" },
+            { material: "PVC rígido", emissividade: "0,92" },
+            { material: "Silicone", emissividade: "0,90" },
+            { material: "Tijolo comum vermelho", emissividade: "0,93" },
+            { material: "Tinta branca", emissividade: "0,94" },
+            { material: "Tinta epóxi", emissividade: "0,90" },
+            { material: "Tinta preta fosca", emissividade: "0,94" },
+            { material: "Vidro liso", emissividade: "0,93" },
+            { material: "Zinco oxidado", emissividade: "0,11" },
+            { material: "Zinco polido", emissividade: "0,05" }
+        ];
+
+        const campoPesquisa = document.getElementById('pesquisa');
+        const listaResultados = document.getElementById('resultados');
+        const contadorResultados = document.getElementById('contadorResultados');
+        const statusBusca = document.getElementById('statusBusca');
+        const resultadoDestaque = document.getElementById('resultadoDestaque');
+        const materialDestaque = document.getElementById('materialDestaque');
+        const valorDestaque = document.getElementById('valorDestaque');
+        const tagsRapidas = document.querySelectorAll('.quick-tag');
+
+        function normalizarTexto(texto) {
+            return texto
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '');
+        }
+
+        function atualizarContador(quantidade) {
+            contadorResultados.textContent = `${quantidade} ${quantidade === 1 ? 'item' : 'itens'}`;
+        }
+
+        function renderizarEstadoInicial() {
+            resultadoDestaque.hidden = true;
+            atualizarContador(0);
+            statusBusca.textContent = 'Digite pelo menos 2 caracteres para iniciar a pesquisa.';
+            listaResultados.innerHTML = `
+                <div class="empty-state">
+                    Nenhuma busca realizada ainda. Comece digitando um material ou use uma das sugestões rápidas acima.
+                </div>
+            `;
+        }
+
+        function renderizarSemResultado() {
+            resultadoDestaque.hidden = true;
+            atualizarContador(0);
+            statusBusca.textContent = 'Nenhum material compatível foi localizado na base atual.';
+            listaResultados.innerHTML = `
+                <div class="empty-state">
+                    Nenhum material encontrado. Tente pesquisar por termos como: cobre, alumínio, aço, porcelana, tinta, fita ou óleo.
+                </div>
+            `;
+        }
+
+        function ordenarResultados(resultados, termo) {
+            return [...resultados].sort((a, b) => {
+                const materialA = normalizarTexto(a.material);
+                const materialB = normalizarTexto(b.material);
+                const aComeca = materialA.startsWith(termo);
+                const bComeca = materialB.startsWith(termo);
+                const aExato = materialA === termo;
+                const bExato = materialB === termo;
+
+                if (aExato !== bExato) return aExato ? -1 : 1;
+                if (aComeca !== bComeca) return aComeca ? -1 : 1;
+                return materialA.localeCompare(materialB, 'pt-BR');
+            });
+        }
+
+        function renderizarResultados(resultados) {
+            const [primeiro] = resultados;
+
+            materialDestaque.textContent = primeiro.material;
+            valorDestaque.textContent = primeiro.emissividade;
+            resultadoDestaque.hidden = false;
+
+            atualizarContador(resultados.length);
+            statusBusca.textContent = `${resultados.length} correspondência${resultados.length === 1 ? '' : 's'} encontrada${resultados.length === 1 ? '' : 's'} na consulta.`;
+
+            listaResultados.innerHTML = resultados.map((item, indice) => `
+                <div class="result-item"${indice === 0 ? ' style="background: rgba(255, 255, 255, 0.02);"' : ''}>
+                    <div class="result-material">${item.material}</div>
+                    <div class="result-value-chip">${item.emissividade}</div>
+                </div>
+            `).join('');
+        }
+
+        function pesquisarEmissividade() {
+            const termo = normalizarTexto(campoPesquisa.value.trim());
+
+            if (termo.length < 2) {
+                renderizarEstadoInicial();
+                return;
+            }
+
+            const resultados = tabelaEmissividade.filter((item) =>
+                normalizarTexto(item.material).includes(termo)
+            );
+
+            if (resultados.length === 0) {
+                renderizarSemResultado();
+                return;
+            }
+
+            renderizarResultados(ordenarResultados(resultados, termo));
+        }
+
+        campoPesquisa.addEventListener('input', pesquisarEmissividade);
+
+        tagsRapidas.forEach((tag) => {
+            tag.addEventListener('click', () => {
+                campoPesquisa.value = tag.dataset.term;
+                campoPesquisa.focus();
+                pesquisarEmissividade();
+            });
+        });
+
+        renderizarEstadoInicial();
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>
